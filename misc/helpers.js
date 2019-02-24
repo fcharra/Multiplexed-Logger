@@ -2,7 +2,15 @@ const MPLogger_GLOBALS = require('./globals.js');
 
 module.exports = {
 
-  _parsePriority: function(priority) {
+  Abstract: class {
+    constructor() {
+      if (new.target === this) {
+        throw new TypeError("Cannot construct Abstract instances directly");
+      }
+    }
+  },
+
+  parsePriority: function(priority) {
     if (typeof priority === 'number') {
       if (priority >= MPLogger_GLOBALS.PRIORITY.SECURITY_ALERT && priority <= MPLogger_GLOBALS.PRIORITY.VERBOSE)
         return Math.floor(priority);

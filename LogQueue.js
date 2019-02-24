@@ -1,19 +1,18 @@
-const LogProcessor = require('./LogProcessor.js');
-
 module.exports = class LogQueue {
 
-  constructor(logger) {
-    this.logProcessor = new LogProcessor(this, logger);
+  constructor(mediaLine) {
+    this.mediaLine = mediaLine;
     this.queue = [];
   }
 
   push(log) {
     this.queue.push(log);
-    this.logProcessor.processEntry();
+    this.mediaLine.processEntry();
   }
 
   doneProcessing() {
-    this.logProcessor.processEntry();
+    if (this.queue.length > 0)
+      this.mediaLine.processEntry();
   }
 
   next() {

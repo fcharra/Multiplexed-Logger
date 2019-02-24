@@ -5,7 +5,7 @@ module.exports = class LogEntry {
 
   constructor(priority, message) {
     this.timestamp = new Date().toISOString();
-    this.priority = helpers._parsePriority(priority);
+    this.priority = helpers.parsePriority(priority);
     this.priorityTag = MPLogger_GLOBALS.PRIORITY.properties[this.priority].tag;
     this.message = message;
   }
@@ -14,13 +14,13 @@ module.exports = class LogEntry {
     return `${this.timestamp} - \(${this.priorityTag}\): ${this.message}`;
   }
 
-  toJSON() {
-    return {
-      'Timestamp': this.timestamp,
-      'Priority': this.priority,
-      'Priority tag': this.priorityTag,
-      'Message': this.message
-    };
+  toJSONString() {
+    let entry = `\t"${this.timestamp}": {
+      \t\t"Priority": ${this.priority},
+      \t\t"Priority tag": "${this.priorityTag}",
+      \t\t"Message": "${this.message}"\n\t},`;
+
+    return entry;
   }
 
 }
