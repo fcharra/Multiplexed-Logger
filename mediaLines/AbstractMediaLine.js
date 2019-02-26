@@ -1,3 +1,15 @@
+/**
+* @module AbstractMediaLine
+* @license MIT
+* @author Federico Charra
+*
+* @requires misc/globals
+* @requires misc/settings
+* @requires misc/helpers
+* @requires LogEntry
+* @requires LogQueue
+*/
+
 const MPLogger_GLOBALS = require('../misc/globals.js');
 const MPLogger_SETTINGS = require('../misc/settings.js');
 
@@ -24,18 +36,19 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
 
   }
 
-  log(priority, message) {
+  log(priority, message, time = null) {
     if (helpers.parsePriority(priority) <= this.verbosity)
-      this.queue.push(new LogEntry(priority, message));
+      this.queue.push(new LogEntry(priority, message, time));
   }
 
   processEntry() {
     this.processor.processEntry();
   }
 
-  // Override this method when extending
-  // to implement new media. Remember
-  // to return a Promise when you do it.
+  /**
+  *
+   @desc Override this method when extending to implement new media. Remember to return a Promise when you do it.
+  */
   processingFunction(logEntry) {}
 
 }
