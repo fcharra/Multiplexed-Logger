@@ -1,3 +1,4 @@
+/** @namespace Settings */
 module.exports = {
 
   OUT_DIR: process.argv[1],
@@ -7,6 +8,8 @@ module.exports = {
               .toISOString()
               .replace(/:/g, '_') +
             '.log',
+
+  DEFAULT_VERBOSITY: 'WARNING',
 
   DEFAULT_REMOTEHOST: 'localhost',
 

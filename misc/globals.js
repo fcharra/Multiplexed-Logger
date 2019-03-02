@@ -1,3 +1,4 @@
+/** @namespace Globals */
 module.exports = {
 
   PRIORITY: {

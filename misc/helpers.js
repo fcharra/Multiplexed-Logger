@@ -1,5 +1,6 @@
 const MPLogger_GLOBALS = require('./globals.js');
 
+/** @namespace Helpers */
 module.exports = {
 
   Abstract: class {
