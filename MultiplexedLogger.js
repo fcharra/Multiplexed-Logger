@@ -3,9 +3,9 @@
 * @license MIT
 * @author Federico Charra
 *
-* @requires mediaLines/MediaLineFactory
-* @requires mediaLines/AbstractMediaLine
-* @requires misc/globals
+* @requires mediaLines/MediaLineFactory.js
+* @requires mediaLines/AbstractMediaLine.js
+* @requires misc/globals.js
 */
 
 const MediaLineFactory = require('./mediaLines/MediaLineFactory.js');
@@ -13,7 +13,7 @@ const AbstractMediaLine = require('./mediaLines/AbstractMediaLine.js');
 const MPLogger_GLOBALS = require('./misc/globals.js');
 
 /**
-* @classdesc Logger's main entry point. Instantiate with proper configurations for each media, then use calling the (@link Logger.log) method.
+* @classdesc Logger's main entry point. Instantiate with proper configurations for each media, then use calling the {@link Logger.log} method.
 */
 module.exports = class Logger {
 

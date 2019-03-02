@@ -24,14 +24,26 @@ module.exports = class LogEntry {
     if (!time || !(time instanceof Date))
       time = new Date();
 
-    /** @package @member {string} */
+    /**
+    * @package
+    * @member {string}
+    */
     this.timestamp = time.toISOString();
-    /** @private @member {number} */
+    /**
+    * @private
+    * @member {number}
+    */
     this.priority = helpers.parsePriority(priority);
-    /** @private @member {string}
-     *  @desc Tag corresponding to the priority level of the object. */
+    /**
+    * @private
+    * @member {string}
+    * @desc Tag corresponding to the priority level of the object.
+    */
     this.priorityTag = MPLogger_GLOBALS.PRIORITY.properties[this.priority].tag;
-    /** @private @member {string} */
+    /**
+    * @private
+    * @member {string}
+    */
     this.message = message;
   }
 
