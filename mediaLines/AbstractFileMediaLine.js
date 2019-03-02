@@ -47,7 +47,7 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
     /**
     * @readonly
     * @member {string}
-    @desc Format to output logs in.
+    * @desc Format to output logs in.
     */
     this.logFormat = config.logFormat || 'PLAIN TEXT';
 

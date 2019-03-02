@@ -3,12 +3,12 @@
 * @license MIT
 * @author Federico Charra
 *
-* @requires AbstractMediaLine.js
-* @requires ConsoleMediaLine.js
-* @requires AsyncFileMediaLine.js
-* @requires SyncFileMediaLine.js
-* @requires NetworkMediaLine.js
-* @requires ../misc/globals.js
+* @requires module:AbstractMediaLine
+* @requires module:ConsoleMediaLine
+* @requires module:AsyncFileMediaLine
+* @requires module:SyncFileMediaLine
+* @requires module:NetworkMediaLine
+* @requires Globals
 */
 
 const AbstractMediaLine = require('./AbstractMediaLine.js');
@@ -21,8 +21,10 @@ const MPLogger_GLOBALS = require('../misc/globals.js');
 /**
 * @function mediaLineFactory
 * @desc Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object's media attribute.
-* @param { {media: (MPLogger_GLOBALS.PRIORITY|string)} } config - Configuration object with a media attribute specifying what media handler to create, along with all pertinent configurations to apply to it.
-* @returns {AbstractMediaLine}
+* @param {Object} config - Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
+* @param {(Globals.PRIORITY|string)} config.media - Attribute specifying what media handler to create.
+* @throws {TypeError} Argument config must be a valid type of media.
+* @returns {module:AbstractMediaLine}
 */
 module.exports = function(config) {
   switch(config.media) {
@@ -34,5 +36,7 @@ module.exports = function(config) {
       return new SyncFileMediaLine(config);
     case 'NETWORK':
       return new NetworkMediaLine(config);
+    default:
+      throw new TypeError("Invalid Argument. Perhaps a typo?");
   }
 }

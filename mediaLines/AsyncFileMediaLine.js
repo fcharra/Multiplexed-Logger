@@ -4,7 +4,7 @@
 * @author Federico Charra
 *
 * @requires fs
-* @requires AbstractFileMediaLine.js
+* @requires module:AbstractFileMediaLine
 */
 
 const fs = require('fs');
@@ -12,22 +12,28 @@ const fs = require('fs');
 const AbstractFileMediaLine = require('./AbstractFileMediaLine.js');
 
 /**
-* @augments {AbstractFileMediaLine}
+* @augments module:AbstractFileMediaLine
 * @classdesc Implementation of MediaLine specific to asynchronous file logging.
 */
 module.exports = class AsyncFileMediaLine extends AbstractFileMediaLine {
   /**
   * @override
   * @desc Initialize basic configuration for asynchronous file logging.
+  * @param {Object} config - Configuration parameters object.
+  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat='PLAIN TEXT'] - Format to output logs in.
   */
   constructor(config) {
     super(config);
   }
 
   /**
-  * @method
-  * @desc Logic for async processing of individual logs.
-  * @param {LogEntry} logEntry - Entry object to be logged.
+  * @augments module:AbstractMediaLine#processingFunction
+  * @private
+  * @instance
+  * @method processingFunction
+  * @desc Logic for async file processing of individual logs.
+  * @param {module:LogEntry} logEntry - Entry object to be logged.
   * @returns {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {

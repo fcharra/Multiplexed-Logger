@@ -19,6 +19,7 @@ module.exports = class ConsoleMediaLine extends AbstractMediaLine {
   * @override
   * @desc Initialize basic configuration for console output.
   * @param {Object} config - Configuration parameters object.
+  * @param {string} [config.logFormat='PLAIN TEXT'] - Format to output logs in.
   */
   constructor(config) {
     super(config);
