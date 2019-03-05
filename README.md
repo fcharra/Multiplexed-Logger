@@ -72,5 +72,10 @@ At the time of this writing, outputting files in JSON in both sync and async mod
 
 Default settings can be modified in your local copy of the [Settings object].
 
+# Documentation
+
+Further information about the API will be published in the [Documentation page]. (Still WIP, like everything else.)
+
 [Globals object]: <https://github.com/fcharra/Multiplexed-Logger/blob/master/misc/globals.js>
 [Settings object]: <https://github.com/fcharra/Multiplexed-Logger/blob/master/misc/settings.js>
+[Documentation page] <https://fcharra.github.io/Multiplexed-Logger/>
