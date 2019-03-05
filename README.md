@@ -78,4 +78,4 @@ Further information about the API will be published in the [Documentation page].
 
 [Globals object]: <https://github.com/fcharra/Multiplexed-Logger/blob/master/misc/globals.js>
 [Settings object]: <https://github.com/fcharra/Multiplexed-Logger/blob/master/misc/settings.js>
-[Documentation page] <https://fcharra.github.io/Multiplexed-Logger/>
+[Documentation page]: <https://fcharra.github.io/Multiplexed-Logger/>
