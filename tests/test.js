@@ -9,7 +9,7 @@ var logger = new MultiplexedLogger([
                    {
                      verbosity: 'WARNING',
                      media: 'FILE',
-                     logFormat: 'PLAIN TEXT',
+                     logFormat: 'JSON',
                      logFile: './testLog-Async.log'
                    },
                    {

@@ -111,8 +111,8 @@ class Processor {
   /** @param {AbstractMediaLine} context - Stores a reference to this processor's owner class. */
   constructor(context) {
     this.context = context;
-    /** @member {string} state - Indicates to the queue whether the processor is ready for more processing ('listening'), or currently processing a log entry ('busy'). */
-    this.state = 'listening';
+    /** @member {string} state - Indicates to the queue whether the processor is waiting until the media is ready to begin ('waiting'), is ready for more processing ('listening'), or is currently processing a log entry ('busy'). */
+    this.state = 'waiting';
   }
 
   /**
@@ -123,7 +123,7 @@ class Processor {
   * @desc Generic processing logic, common to all types of media. processingFunction gets called internally to delegate logic specific to each kind of media.
   */
   async processEntry() {
-    if (!this.state === 'listening') return; // Not ready to process yet. LogEntry will be waiting in queue.
+    if (this.state !== 'listening') return; // Not ready to process yet. LogEntry will be waiting in queue.
     let currLogEntry = this.context.queue.next();
     if (!currLogEntry) return; // "undefined" means we're done with the stack for the moment.
 
@@ -134,17 +134,15 @@ class Processor {
     /* But... Muh' encapsulation!!!
      * Yeah, some compromises were made to keep concerns
      * as separated and abstracted as possible... */
-    await strategy.call(this.context, currLogEntry)
-          .then( () => {
-            this.state = 'listening'; // Ready for more processing
-            this.context.queue.doneProcessing();
-          })
-          .catch( (err) => {
-            // Failure to log individual events will not be considered a fatal error, but will be logged via normal error console.
-            console.error('Could not log. ' + Error(err));
-            this.state = 'listening'; // Now we're ready for more processing
-            return;
-          });
+    try {
+      await strategy.call(this.context, currLogEntry);
+      this.state = 'listening'; // Ready for more processing
+      this.context.queue.doneProcessing();
+    }
+    catch(err) {
+      // Failure to log individual events will not be considered a fatal error, but will be logged via normal error console.
+      console.error('Could not log. ' + Error(err));
+    }
   }
 
 }

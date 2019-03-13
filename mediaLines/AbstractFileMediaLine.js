@@ -55,6 +55,8 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
     if (fs.existsSync(this.logFile))
       fs.unlinkSync(this.logFile);
 
+    this.fileState = 'waiting';
+
     // Initializing and properly closing the JSON file on exit
     if (this.logFormat === 'JSON') {
       this._initializeJSONFile();
@@ -65,14 +67,18 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
 
   /** @ignore */
   _initializeJSONFile() {
-    try {
-      // Sync because we need to be certain the root object brackets are opened before we write any entry.
-      fs.writeFileSync(this.logFile, '{\n', 'utf8');
-    }
-    catch (err) {
-      console.error('FATAL ERROR: Could not create file.');
-      throw Error(err);
-    }
+    // Processor waits until file is created and properly formatted, then signals it to start requesting logs from the queue.
+    fs.writeFile(this.logFile, '{\n', 'utf8', (err) => {
+      if (err) {
+        console.error('FATAL ERROR: Could not create file.');
+        throw Error(err);
+      }
+
+      this.fileState = 'blank';
+      // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
+      this.processor.state = 'listening';
+      this.processNext();
+    });
   }
 
   /* Ensure proper JSON formatting of the log file.
