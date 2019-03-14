@@ -116,6 +116,17 @@ class Processor {
   }
 
   /**
+  * @package
+  * @instance
+  * @method
+  * @desc Used by media to signal they are ready to start receiving logs.
+  */
+  mediaIsReady() {
+    this.state = 'listening';
+    this.context.processNext();
+  }
+
+  /**
   * @protected
   * @async
   * @instance

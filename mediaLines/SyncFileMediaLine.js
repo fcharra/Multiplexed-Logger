@@ -35,10 +35,16 @@ module.exports = class SyncFileMediaLine extends AbstractFileMediaLine {
   * @returns {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
-    let logString = (this.logFormat === 'JSON')? (logEntry.toJSONString() + '\n') : (logEntry.toString() + '\n');
+    let logString = (this.logFormat === 'JSON')? logEntry.toJSONString() : (logEntry.toString() + '\n');
 
     return new Promise( (resolve, reject) => {
       try {
+        // Remove starting comma from first entry. (Shame on you, JSON. You should just accept trailing commas already.)
+        if (this.fileState === 'blank') {
+          logString = logString.replace(',\n\t', '\n\t');
+          this.fileState = 'initiated';
+        }
+        
         fs.appendFileSync(this.logFile, logString, 'utf8');
         resolve(true);
       }

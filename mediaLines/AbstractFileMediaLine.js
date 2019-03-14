@@ -51,13 +51,17 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
     */
     this.logFormat = config.logFormat || 'PLAIN TEXT';
 
-    // If log file already exists, delete before proceding.
-    if (fs.existsSync(this.logFile))
-      fs.unlinkSync(this.logFile);
-
+    /**
+    * @package
+    * @member {string}
+    * @desc Internal state of the file. It can either be:
+    * 'waiting': File is NOT still created or properly formatted. This is an invalid state, and operations on the file should wait until it's changed.
+    * 'blank': File is ready, but no logs have been written yet. Concrete media need to know this, to properly modify the JSON string (remove the first preppended comma.)
+    * 'initiated': File is ready, and logs have already been written to it. So no especial steps need to be taken before using it.
+    */
     this.fileState = 'waiting';
 
-    // Initializing and properly closing the JSON file on exit
+    // Initializing the JSON file and properly closing it on exit.
     if (this.logFormat === 'JSON') {
       this._initializeJSONFile();
       process.on('exit', () => this._closeJSONFile() );
@@ -67,8 +71,10 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
 
   /** @ignore */
   _initializeJSONFile() {
-    // Processor waits until file is created and properly formatted, then signals it to start requesting logs from the queue.
-    fs.writeFile(this.logFile, '{\n', 'utf8', (err) => {
+    /* Processor waits until file is created and properly formatted, then signals it to start requesting logs from the queue.
+    *  If log file already exists, writeFile will delete before proceding.
+    */
+    fs.writeFile(this.logFile, '{', 'utf8', (err) => {
       if (err) {
         console.error('FATAL ERROR: Could not create file.');
         throw Error(err);
@@ -76,24 +82,22 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
 
       this.fileState = 'blank';
       // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
-      this.processor.state = 'listening';
-      this.processNext();
+      this.processor.mediaIsReady();
     });
   }
 
-  /* Ensure proper JSON formatting of the log file.
-   * When the logger stops, the root JSON object hasn't been closed yet, and the last entry object has a trailing comma at the end.
-   * Regrettably, since preppending the comma didn't work out either because of async writing, the only way I found so far to remove it is to rewrite the entire file.
+  /* Closing the file is done synchronously. Otherwise, it doesn't gets done before closing.
+  *  Reading and rewriting the entire file synchronously has now been changed to a single sync append, which still should reduce thread locking significantly.
   */
   /** @ignore */
   _closeJSONFile() {
     try {
-      let data = fs.readFileSync(this.logFile, 'utf8');
-      let result = data.replace(/,\n$/, '\n}');
-      fs.writeFileSync(this.logFile, result, 'utf8');
+      fs.appendFileSync(this.logFile, '\n}', 'utf8');
     }
-    catch (err) {
-      // Failing to close will not be considered a fatal error, since the file can still be fixed by hand. It will, however, be logged to standard error console.
+    catch(err) {
+      /* Failing to close will not be considered a fatal error, since the file can still be easily fixed by hand.
+      * It will, however, be logged to standard error console.
+      */
       console.error('Could not properly close JSON log. ' + Error(err));
       return;
     }

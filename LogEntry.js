@@ -71,10 +71,10 @@ module.exports = class LogEntry {
   * @returns {string} A JSON-formatted string representing the log entry.
   */
   toJSONString() {
-    let entry = `\t"${this.timestamp}": {
+    let entry = `,\n\t"${this.timestamp}": {
       \t\t"Priority": ${this.priority},
       \t\t"Priority tag": "${this.priorityTag}",
-      \t\t"Message": "${this.message}"\n\t},`;
+      \t\t"Message": "${this.message}"\n\t}`;
 
     return entry;
   }

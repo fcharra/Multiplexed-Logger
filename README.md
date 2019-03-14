@@ -57,7 +57,7 @@ Both verbosity for each media and priority levels for each log entry are defined
 |    1     |  SECURITY ALERT  | SQL injection attempts, attempt at vulnerability exploitation...          |
 |    2     | SECURITY WARNING | Multiple login attempts, sudden spike in requests...                      |
 |    3     |      ERROR       | 404, wrong format in parameters...                                        |
-|    4     |     WARNING      | Using defaults or fallbacks, using features untested or not recomended... |
+|    4     |     WARNING      | Using defaults or fallbacks, using features untested or not recommended... |
 |    5     |     VERBOSE      | What it says on the label. ;) :)                                          |
 
 You can create new levels, or modify or rearrange the existing ones, by following the format outlined in the [Globals object]. (Remember to update the properties element accordingly.)
@@ -65,8 +65,6 @@ You can create new levels, or modify or rearrange the existing ones, by followin
 # Output formats
 
 Multiplexed-Logger can output in either JSON or plain text format. XML or custom string formats may be added in the future.
-
-At the time of this writing, outputting files in JSON in both sync and async modes require rewriting the file in sync mode before closing. This may cause performace issues when closing a log file, if such file has many logs. A fix will be worked out before releasing to npm.
 
 # Default settings
 

@@ -31,7 +31,7 @@ module.exports = class ConsoleMediaLine extends AbstractMediaLine {
     this.logFormat = config.logFormat || 'PLAIN TEXT';
 
     // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
-    this.processor.state = 'listening';
+    this.processor.mediaIsReady();
   }
 
   /**

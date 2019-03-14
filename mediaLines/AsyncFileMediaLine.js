@@ -37,9 +37,15 @@ module.exports = class AsyncFileMediaLine extends AbstractFileMediaLine {
   * @returns {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
-    let logString = (this.logFormat === 'JSON')? (logEntry.toJSONString() + '\n') : (logEntry.toString() + '\n');
+    let logString = (this.logFormat === 'JSON')? logEntry.toJSONString() : (logEntry.toString() + '\n');
 
     return new Promise( (resolve, reject) => {
+      // Remove starting comma from first entry. (Shame on you, JSON. You should just accept trailing commas already.)
+      if (this.fileState === 'blank') {
+        logString = logString.replace(',\n\t', '\n\t');
+        this.fileState = 'initiated';
+      }
+
       fs.appendFile(this.logFile, logString, 'utf8', (err) => {
         if (err) reject( Error('FATAL ERROR: Could not append to the log file.') );
 
