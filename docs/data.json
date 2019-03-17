@@ -1,0 +1,484 @@
+{
+    "project": {
+        "name": "Multiplexed-Logger",
+        "description": "Simultaneously log to multiple media with a singleline of code in NodeJS. Supports logging to console and file (syncand async). Supports both plain text and JSON formats. Logging to adatabse and to a server via HTTP are planned in a future version.",
+        "version": "0.0.1",
+        "url": "https://github.com/fcharra/Multiplexed-Logger.git"
+    },
+    "files": {
+        "LogEntry.js": {
+            "name": "LogEntry.js",
+            "modules": {
+                "LogEntry": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "LogQueue.js": {
+            "name": "LogQueue.js",
+            "modules": {
+                "LogQueue": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "MultiplexedLogger.js": {
+            "name": "MultiplexedLogger.js",
+            "modules": {
+                "MultiplexedLogger": 1
+            },
+            "classes": {
+                "MultiplexedLogger": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "LogEntry": {
+            "name": "LogEntry",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "LogEntry.js",
+            "line": 1,
+            "license": "MIT",
+            "author": "Federico Charra",
+            "requires": [
+                "Globals",
+                "Helpers"
+            ]
+        },
+        "LogQueue": {
+            "name": "LogQueue",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "LogQueue.js",
+            "line": 1,
+            "license": "MIT",
+            "author": "Federico Charra",
+            "requires": [
+                "module:AbstractMediaLine",
+                "module:LogEntry"
+            ]
+        },
+        "MultiplexedLogger": {
+            "name": "MultiplexedLogger",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "MultiplexedLogger": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "MultiplexedLogger.js",
+            "line": 16
+        }
+    },
+    "classes": {
+        "MultiplexedLogger": {
+            "name": "MultiplexedLogger",
+            "shortname": "MultiplexedLogger",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "MultiplexedLogger",
+            "namespace": "",
+            "file": "MultiplexedLogger.js",
+            "line": 16,
+            "description": "Logger's main entry point. Instantiate with proper configurations for each media, then use calling the MultiplexedLogger.log method.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "configArray",
+                    "description": "Array of configurations. (Vary for each media.)",
+                    "type": "Object[]"
+                }
+            ]
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "LogEntry.js",
+            "line": 13,
+            "classdesc": "Represents an individual entry in the log.",
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 17,
+            "desc": "Initialize data attributes for this log entry.",
+            "params": [
+                {
+                    "name": "priority",
+                    "description": "- A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.",
+                    "type": "(string|Globals.PRIORITY)"
+                },
+                {
+                    "name": "message",
+                    "description": "- Message to be logged.",
+                    "type": "String"
+                },
+                {
+                    "name": "time",
+                    "description": "- Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)",
+                    "type": "Date",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 27,
+            "package": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Time at which the event took place.",
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 33,
+            "package": "",
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "number|Globals.PRIORITY",
+            "desc": "A verbosity value that represents the priority of this entry, as defined in the globals object.",
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 40,
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Tag corresponding to the priority level of the object.",
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 47,
+            "package": "",
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Message to be logged.",
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 57,
+            "instance": "",
+            "itemtype": "method",
+            "name": "toString",
+            "desc": "Returns a string representing the log entry.",
+            "return": {
+                "description": "A string representing the log entry.",
+                "type": "String"
+            },
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 67,
+            "instance": "",
+            "itemtype": "method",
+            "name": "toJSONString",
+            "desc": "Returns a JSON-formatted string representing the log entry.",
+            "return": {
+                "description": "A JSON-formatted string representing the log entry.",
+                "type": "String"
+            },
+            "class": "MultiplexedLogger",
+            "module": "LogEntry"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 13,
+            "classdesc": "Represents a queue of log entries, ordered in a FIFO stack.",
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 17,
+            "params": [
+                {
+                    "name": "mediaLine",
+                    "description": "- An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
+                    "type": "Module:AbstractMediaLine"
+                }
+            ],
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 21,
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "Module:AbstractMediaLine",
+            "desc": "An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 28,
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "LogEntry[]",
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 35,
+            "instance": "",
+            "itemtype": "method",
+            "name": "push",
+            "desc": "Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.",
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 46,
+            "instance": "",
+            "package": "",
+            "itemtype": "method",
+            "name": "doneProcessing",
+            "desc": "Used by this class' associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {@link module:AbstractMediaLine#processNext}, so that the processing can continue until the queue is empty.",
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "LogQueue.js",
+            "line": 57,
+            "instance": "",
+            "itemtype": "method",
+            "name": "next",
+            "desc": "Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)",
+            "return": {
+                "description": "Oldest log entry in the stack. Undefined if stack is empty. (Should not need to happen, but safeguards are in place to handle it. Just in case.)",
+                "type": "?module:LogEntry"
+            },
+            "class": "MultiplexedLogger",
+            "module": "LogQueue"
+        },
+        {
+            "file": "MultiplexedLogger.js",
+            "line": 23,
+            "description": "Array of media ({@link module:AbstractMediaLine} derived objects) that this logger will log to.",
+            "itemtype": "property",
+            "name": "mediaLine",
+            "type": "{Object[]}",
+            "class": "MultiplexedLogger",
+            "module": "MultiplexedLogger"
+        },
+        {
+            "file": "MultiplexedLogger.js",
+            "line": 35,
+            "description": "Log to all configured media, a given message with a given priority.",
+            "itemtype": "method",
+            "name": "log",
+            "params": [
+                {
+                    "name": "priority",
+                    "description": "A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.",
+                    "type": "string|Globals.PRIORITY"
+                },
+                {
+                    "name": "message",
+                    "description": "The message to be logged.",
+                    "type": "String"
+                }
+            ],
+            "class": "MultiplexedLogger",
+            "module": "MultiplexedLogger"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: license",
+            "line": " LogEntry.js:1"
+        },
+        {
+            "message": "unknown tag: classdesc",
+            "line": " LogEntry.js:13"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:17"
+        },
+        {
+            "message": "unknown tag: package",
+            "line": " LogEntry.js:27"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogEntry.js:27"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:27"
+        },
+        {
+            "message": "unknown tag: package",
+            "line": " LogEntry.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogEntry.js:33"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogEntry.js:40"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:40"
+        },
+        {
+            "message": "unknown tag: package",
+            "line": " LogEntry.js:47"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogEntry.js:47"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:47"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " LogEntry.js:57"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:57"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " LogEntry.js:57"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " LogEntry.js:67"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogEntry.js:67"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " LogEntry.js:67"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " LogQueue.js:1"
+        },
+        {
+            "message": "unknown tag: classdesc",
+            "line": " LogQueue.js:13"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogQueue.js:21"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogQueue.js:21"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " LogQueue.js:28"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " LogQueue.js:35"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogQueue.js:35"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " LogQueue.js:46"
+        },
+        {
+            "message": "unknown tag: package",
+            "line": " LogQueue.js:46"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogQueue.js:46"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " LogQueue.js:57"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " LogQueue.js:57"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " LogQueue.js:57"
+        },
+        {
+            "message": "Missing item type",
+            "line": " LogEntry.js:13"
+        },
+        {
+            "message": "Missing item type",
+            "line": " LogEntry.js:17"
+        },
+        {
+            "message": "Missing item type",
+            "line": " LogQueue.js:13"
+        },
+        {
+            "message": "Missing item type",
+            "line": " LogQueue.js:17"
+        }
+    ]
+}

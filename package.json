@@ -2,7 +2,15 @@
   "name": "multiplexed-logger",
   "version": "0.0.1",
   "description": "Simultaneously log to multiple media with a single line of code in NodeJS. Supports logging to console and file (sync and async). Supports both plain text and JSON formats. Logging to a databse and to a server via HTTP are planned in a future version.",
-  "keywords": ["log", "logger", "logging", "multiplexed", "multiplexed logger", "multiplexed-logger", "remote log"],
+  "keywords": [
+    "log",
+    "logger",
+    "logging",
+    "multiplexed",
+    "multiplexed logger",
+    "multiplexed-logger",
+    "remote log"
+  ],
   "homepage": "https://github.com/fcharra/Multiplexed-Logger#readme",
   "bugs": "https://github.com/fcharra/Multiplexed-Logger/issues",
   "license": "MIT",
@@ -12,13 +20,13 @@
   },
   "main": "MultiplexedLogger.js",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/fcharra/Multiplexed-Logger.git"
+    "type": "git",
+    "url": "https://github.com/fcharra/Multiplexed-Logger.git"
   },
   "devDependencies": {
-    "jsdoc": ">=3.5.5"
+    "yuidocjs": "^0.10.2"
   },
-  "engines" : {
-    "node" : ">=10.15.2"
+  "engines": {
+    "node": ">=10.15.2"
   }
 }
