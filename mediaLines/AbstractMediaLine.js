@@ -1,5 +1,4 @@
-/**
-* @module AbstractMediaLine
+/*
 * @license MIT
 * @author Federico Charra
 *
@@ -17,31 +16,34 @@ const LogEntry = require('../LogEntry.js');
 const LogQueue = require('../LogQueue.js');
 
 /**
-* @abstract
-* @augments Helpers.Abstract
-* @classdesc Media lines specify different media behaviour for processing log entries, and hold reference of those logs that are in their (media line's) levels of verbosity via a private LogQueue object. This class abstracts away logic and attributes common to all the various implementations.
+* @main MultiplexedLogger
 */
 module.exports = class AbstractMediaLine extends helpers.Abstract {
   /**
-  * @abstract
-  * @override
-  * @desc Initialize basic configuration common to all MediaLine objects.
-  * @param {Object} config - Configuration parameters object.
-  * @param {(string|Globals.MEDIA)} config.media - Type of media to output log entries to.
-  * @param {(string|Globals.PRIORITY)} config.verbosity - Level of verbosity for this particular log.
+  * Media lines specify different media behaviour for processing log entries, and hold reference of those logs that are in their (media line's) levels of verbosity via a private LogQueue object. This class abstracts away logic and attributes common to all the various implementations.
+  * @class AbstractMediaLine
+  * @constructor
+  * @extends Helpers.Abstract
+  * @param {Object} config Configuration parameters object.
+  * @param {string|Globals.MEDIA} config.media Type of media to output log entries to.
+  * @param {string|Globals.PRIORITY} config.verbosity Level of verbosity for this particular log.
   */
   constructor(config) {
     super();
     /**
+    * Type of media to output log entries to.
+    * @public
     * @readonly
-    * @member {Globals.MEDIA}
-    * @desc Type of media to output log entries to.
+    * @property media
+    * @type {Globals.MEDIA}
     */
     this.media = config.media || null;
     /**
+    * Level of verbosity for this particular log.
+    * @public
     * @readonly
-    * @member {Globals.PRIORITY}
-    * @desc Level of verbosity for this particular log.
+    * @property verbosity
+    * @type {Globals.PRIORITY}
     */
     this.verbosity = helpers.parsePriority(
                        config.verbosity ||
@@ -50,28 +52,28 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
     /**
     * @private
     * @readonly
-    * @member {LogQueue}
+    * @property queue
+    * @type {LogQueue}
     */
     this.queue = new LogQueue(this);
     /**
+    * Inner object that abstracts away common logic for processing entries.
     * @private
-    * @ignore
     * @readonly
-    * @member {Processor}
-    * @desc Inner object that abstracts away common logic for processing entries.
+    * @property processor
+    * @type {Processor}
     */
     this.processor = new Processor(this);
 
   }
 
   /**
+  * Send a LogEntry with the specified parameters to the queue, to wait in line for processing.
   * @public
-  * @instance
   * @method log
-  * @desc Send a LogEntry with the specified parameters to the queue, to wait in line for processing.
-  * @param {Globals.PRIORITY} priority - Priority of the log entry.
-  * @param {string} message - Data to be logged.
-  * @param {Date} [time=null] - Time object to be used as timestamp. If ommited, the log entry will be stamped with the date and time of the log object's creation.
+  * @param {Globals.PRIORITY} priority Priority of the log entry.
+  * @param {string} message Data to be logged.
+  * @param {Date} [time=null] Time object to be used as timestamp. If ommited, the log entry will be stamped with the date and time of the log object's creation.
   */
   log(priority, message, time = null) {
     // Priority is ordered in reverse from min to max. (1 (highest) = SEC ALERT, 5 (lowest) = VERBOSE)
@@ -80,46 +82,53 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
   }
 
   /**
+  * Called from this class' associated LogQueue object to signal the availability of more logs waiting in line for processing. Delegates generic processing to this class' processing object.
   * @public
-  * @instance
   * @method processNext
-  * @desc Called from this class' associated LogQueue object to signal the availability of more logs waiting in line for processing. Delegates generic processing to this class' processing object.
   */
   processNext() {
     this.processor.processEntry();
   }
 
   /**
-  * @abstract
+  * !ABSTRACT! Send log entry to be processed by this media instance. Override this method when extending to implement new media. Remember to return a Promise when you do it.
   * @protected
-  * @instance
   * @method processingFunction
-  * @desc Send log entry to be processed by this media instance. Override this method when extending to implement new media. Remember to return a Promise when you do it.
-  * @param {module:LogEntry} logEntry - Entry object to be logged.
-  * @returns {Promise} True if resolved, Error object if rejected.
+  * @param {LogEntry} logEntry Entry object to be logged.
+  * @return {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {}
 
 }
 
-/**
-* @inner
-* @protected
-* @desc Inner class that abstracts away common logic for processing entries. Concrete instances' processingFunction methods get called internally to delegate logic specific to each kind of media.
-*/
 class Processor {
-  /** @param {AbstractMediaLine} context - Stores a reference to this processor's owner class. */
+  /**
+  * Inner class that abstracts away common logic for processing entries. Concrete instances' processingFunction methods get called internally to delegate logic specific to each kind of media.
+  * @class Processor
+  * @constructor
+  * @param {AbstractMediaLine} context Stores a reference to this processor's owner class. */
   constructor(context) {
+    /**
+    * Stores a reference to this processor's owner class.
+    * @private
+    * @readonly
+    * @property context
+    * @type {AbstractMediaLine}
+    */
     this.context = context;
-    /** @member {string} state - Indicates to the queue whether the processor is waiting until the media is ready to begin ('waiting'), is ready for more processing ('listening'), or is currently processing a log entry ('busy'). */
+    /**
+    * Indicates to the queue whether the processor is waiting until the media is ready to begin ('waiting'), is ready for more processing ('listening'), or is currently processing a log entry ('busy').
+    * @private
+    * @property state
+    * @type {string}
+    */
     this.state = 'waiting';
   }
 
   /**
-  * @package
-  * @instance
-  * @method
-  * @desc Used by media to signal they are ready to start receiving logs.
+  * Used by media to signal they are ready to start receiving logs.
+  * @public
+  * @method mediaIsReady
   */
   mediaIsReady() {
     this.state = 'listening';
@@ -127,11 +136,10 @@ class Processor {
   }
 
   /**
+  * Generic processing logic, common to all types of media. processingFunction gets called internally to delegate logic specific to each kind of media.
   * @protected
   * @async
-  * @instance
-  * @method
-  * @desc Generic processing logic, common to all types of media. processingFunction gets called internally to delegate logic specific to each kind of media.
+  * @method processEntry
   */
   async processEntry() {
     if (this.state !== 'listening') return; // Not ready to process yet. LogEntry will be waiting in queue.

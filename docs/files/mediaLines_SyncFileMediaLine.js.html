@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LogEntry.js - Multiplexed-Logger</title>
+    <title>mediaLines\SyncFileMediaLine.js - Multiplexed-Logger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,88 +86,64 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: LogEntry.js</h1>
+<h1 class="file-heading">File: mediaLines\SyncFileMediaLine.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/* @license MIT
+/**
+* @module SyncFileMediaLine
+* @license MIT
 * @author Federico Charra
 *
-* @requires Globals
-* @requires Helpers
+* @requires fs
+* @requires module:AbstractFileMediaLine
 */
+const fs = require(&#x27;fs&#x27;);
 
-const MPLogger_GLOBALS = require(&#x27;./misc/globals.js&#x27;);
-const helpers = require(&#x27;./misc/helpers.js&#x27;);
+const AbstractFileMediaLine = require(&#x27;./AbstractFileMediaLine.js&#x27;);
 
 /**
-* @main MultiplexedLogger
+* @augments module:AbstractFileMediaLine
+* @classdesc Implementation of MediaLine specific to synchronous file logging.
 */
-module.exports = class LogEntry {
+module.exports = class SyncFileMediaLine extends AbstractFileMediaLine {
   /**
-  * Represents an individual entry in the log.
-  * @class LogEntry
-  * @constructor
-  * @param {string|Globals.PRIORITY} priority A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.
-  * @param {string} message Message to be logged.
-  * @param {Date} [time=null] Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)
+  * @override
+  * @desc Initialize basic configuration for synchronous file logging.
+  * @param {Object} config - Configuration parameters object.
+  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] - Format to output logs in.
   */
-  constructor(priority, message, time = null) {
-    if (!time || !(time instanceof Date))
-      time = new Date();
-
-    /**
-    * Time at which the event took place.
-    * @property timestamp
-    * @type {string}
-    */
-    this.timestamp = time.toISOString();
-    /**
-    * A verbosity value that represents the priority of this entry, as defined in the globals object.
-    * @readonly
-    * @property priority
-    * @type {number|Globals.PRIORITY}
-    */
-    this.priority = helpers.parsePriority(priority);
-    /**
-    * Tag corresponding to the priority level of the object.
-    * @private
-    * @readonly
-    * @property priorityTag
-    * @type {string}
-    */
-    this.priorityTag = MPLogger_GLOBALS.PRIORITY.properties[this.priority].tag;
-    /**
-    * Message to be logged.
-    * @readonly
-    * @property message
-    * @type {string}
-    */
-    this.message = message;
+  constructor(config) {
+    super(config);
   }
-
-
   /**
-  * Returns a string representing the log entry.
-  * @method toString
-  * @return {string} A string representing the log entry.
+  * @augments module:AbstractMediaLine#processingFunction
+  * @private
+  * @instance
+  * @method processingFunction
+  * @desc Logic for sync processing of individual logs.
+  * @param {module:LogEntry} logEntry - Entry object to be logged.
+  * @returns {Promise} True if resolved, Error object if rejected.
   */
-  toString() {
-    return &#x60;${this.timestamp} - \(${this.priorityTag}\): ${this.message}&#x60;;
-  }
+  processingFunction(logEntry) {
+    let logString = (this.logFormat === &#x27;JSON&#x27;)? logEntry.toJSONString() : (logEntry.toString() + &#x27;\n&#x27;);
 
-  /**
-  * Returns a JSON-formatted string representing the log entry.
-  * @method toJSONString
-  * @return {string} A JSON-formatted string representing the log entry.
-  */
-  toJSONString() {
-    let entry = &#x60;,\n\t&quot;${this.timestamp}&quot;: {
-      \t\t&quot;Priority&quot;: ${this.priority},
-      \t\t&quot;Priority tag&quot;: &quot;${this.priorityTag}&quot;,
-      \t\t&quot;Message&quot;: &quot;${this.message}&quot;\n\t}&#x60;;
-
-    return entry;
+    return new Promise( (resolve, reject) =&gt; {
+      try {
+        // Remove starting comma from first entry. (Shame on you, JSON. You should just accept trailing commas already.)
+        if (this.fileState === &#x27;blank&#x27;) {
+          logString = logString.replace(&#x27;,\n\t&#x27;, &#x27;\n\t&#x27;);
+          this.fileState = &#x27;initiated&#x27;;
+        }
+        
+        fs.appendFileSync(this.logFile, logString, &#x27;utf8&#x27;);
+        resolve(true);
+      }
+      catch (err) {
+        reject(Error(&#x27;ERROR FATAL: No se pudo crear el archivo de log.&#x27;));
+      }
+    });
   }
 
 }

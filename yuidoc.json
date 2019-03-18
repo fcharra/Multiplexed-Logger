@@ -9,7 +9,7 @@
     "paths": [
         "."
     ],
-    "exclude": ".git,mediaLines,misc,node_modules,tests",
-    "ignorePaths": ".git,mediaLines,misc,node_modules,tests"
+    "exclude": ".git,misc,node_modules,tests",
+    "ignorePaths": ".git,misc,node_modules,tests"
   }
 }

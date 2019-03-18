@@ -38,14 +38,21 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/LogEntry.html">LogEntry</a></li>
+                                <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
+                                <li><a href="../classes/Processor.html">Processor</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/LogEntry.html">LogEntry</a></li>
-                                <li><a href="../modules/LogQueue.html">LogQueue</a></li>
+                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
+                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
+                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
+                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -83,9 +90,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
-* @module LogQueue
-* @license MIT
+/*
 * @author Federico Charra
 *
 * @requires module:AbstractMediaLine
@@ -96,32 +101,36 @@ const AbstractMediaLine = require(&#x27;./mediaLines/AbstractMediaLine.js&#x27;)
 const LogEntry = require(&#x27;./LogEntry.js&#x27;);
 
 /**
-* @classdesc Represents a queue of log entries, ordered in a FIFO stack.
+* @main MultiplexedLogger
 */
 module.exports = class LogQueue {
   /**
-  * @param {module:AbstractMediaLine} mediaLine - An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
+  * Represents a queue of log entries, ordered in a FIFO stack.
+  * @class LogQueue
+  * @constructor
+  * @param {AbstractMediaLine} mediaLine (Concrete) Medialine owner of this queue.
   */
   constructor(mediaLine) {
     /**
+    * An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
     * @private
     * @readonly
-    * @member {module:AbstractMediaLine}
-    * @desc An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
+    * @property mediaLine
+    * @type {AbstractMediaLine}
     */
     this.mediaLine = mediaLine;
     /**
     * @private
-    * @member {LogEntry[]}
+    * @property queue
+    * @type {LogEntry[]}
     */
     this.queue = [];
   }
 
   /**
-  * @instance
+  * Register a log entry in the queue. Log entries will stay in the queue until it&#x27;s their turn to be processed. This class&#x27;s associated media line object directs the entire process transparently to the user of this class.
   * @method push
-  * @desc Register a log entry in the queue. Log entries will stay in the queue until it&#x27;s their turn to be processed. This class&#x27;s associated media line object directs the entire process transparently to the user of this class.
-  * @param {module:LogEntry} log - LogEntry instance to be pushed to the queue. */
+  * @param {LogEntry} log LogEntry instance to be pushed to the queue. */
   push(log) {
     this.queue.push(log);
     this.mediaLine.processNext();
@@ -129,10 +138,8 @@ module.exports = class LogQueue {
 
 
   /**
-  * @instance
-  * @package
+  * Used by this class&#x27; associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {{#crossLink &quot;AbstractMediaLine/processNext:method&quot;}}its processNext method{{/crossLink}}, so that the processing can continue until the queue is empty.
   * @method doneProcessing
-  * @desc Used by this class&#x27; associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {@link module:AbstractMediaLine#processNext}, so that the processing can continue until the queue is empty.
   */
   doneProcessing() {
     if (this.queue.length &gt; 0)
@@ -140,10 +147,9 @@ module.exports = class LogQueue {
   }
 
   /**
-  * @instance
+  * Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)
   * @method next
-  * @desc Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)
-  * @returns {?module:LogEntry} Oldest log entry in the stack. Undefined if stack is empty. (Should not need to happen, but safeguards are in place to handle it. Just in case.)
+  * @return {LogEntry|undefined} Oldest log entry in the stack. Undefined if stack is empty.
   */
   next() {
     return this.queue.shift();

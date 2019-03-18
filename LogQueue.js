@@ -1,5 +1,4 @@
 /*
-* @license MIT
 * @author Federico Charra
 *
 * @requires module:AbstractMediaLine

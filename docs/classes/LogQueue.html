@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>MultiplexedLogger - Multiplexed-Logger</title>
+    <title>LogQueue - Multiplexed-Logger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,33 +86,33 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>MultiplexedLogger Class</h1>
+<h1>LogQueue Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/MultiplexedLogger.js.html#l16"><code>MultiplexedLogger.js:16</code></a>
+            Defined in: <a href="../files/LogQueue.js.html#l15"><code>LogQueue.js:15</code></a>
         </div>
 
-            Module: <a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a>
+            Module: <a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Logger's main entry point. Instantiate with proper configurations for each media, then use calling the MultiplexedLogger.log method.</p>
+    <p>Represents a queue of log entries, ordered in a FIFO stack.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_MultiplexedLogger" class="method item">
-    <h3 class="name"><code>MultiplexedLogger</code></h3>
+<div id="method_LogQueue" class="method item">
+    <h3 class="name"><code>LogQueue</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>configArray</code>
+                        <code>mediaLine</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -127,7 +127,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/MultiplexedLogger.js.html#l16"><code>MultiplexedLogger.js:16</code></a>
+        <a href="../files/LogQueue.js.html#l15"><code>LogQueue.js:15</code></a>
         </p>
 
 
@@ -143,12 +143,12 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">configArray</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object[]</a></span>
+                        <code class="param-name">mediaLine</code>
+                        <span class="type"><a href="../classes/AbstractMediaLine.html" class="crosslink">AbstractMediaLine</a></span>
 
 
                     <div class="param-description">
-                        <p>Array of configurations. (Vary for each media.)</p>
+                        <p>(Concrete) Medialine owner of this queue.</p>
 
                     </div>
 
@@ -178,7 +178,15 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_log">log</a>
+                                <a href="#method_doneProcessing">doneProcessing</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_next">next</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_push">push</a>
 
                             </li>
                     </ul>
@@ -188,8 +196,12 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties">
-                            <li class="index-item property">
+                            <li class="index-item property private">
                                 <a href="#property_mediaLine">mediaLine</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_queue">queue</a>
 
                             </li>
                     </ul>
@@ -201,19 +213,10 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_log" class="method item">
-    <h3 class="name"><code>log</code></h3>
+<div id="method_doneProcessing" class="method item">
+    <h3 class="name"><code>doneProcessing</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>priority</code>
-                </li>
-                <li class="arg">
-                        <code>message</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
@@ -225,7 +228,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/MultiplexedLogger.js.html#l35"><code>MultiplexedLogger.js:35</code></a>
+        <a href="../files/LogQueue.js.html#l48"><code>LogQueue.js:48</code></a>
         </p>
 
 
@@ -233,38 +236,84 @@
     </div>
 
     <div class="description">
-        <p>Log to all configured media, a given message with a given priority.</p>
+        <p>Used by this class' associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via <a href="../classes/AbstractMediaLine.html#method_processNext" class="crosslink">its processNext method</a>, so that the processing can continue until the queue is empty.</p>
 
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">priority</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Globals.PRIORITY</span>
 
 
-                    <div class="param-description">
-                        <p>A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.</p>
 
-                    </div>
+</div>
+<div id="method_next" class="method item">
+    <h3 class="name"><code>next</code></h3>
 
-                </li>
-                <li class="param">
-                        <code class="param-name">message</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/LogEntry.html" class="crosslink">LogEntry</a> | Undefined</span>
+        </span>
 
 
-                    <div class="param-description">
-                        <p>The message to be logged.</p>
 
-                    </div>
 
-                </li>
-            </ul>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/LogQueue.js.html#l57"><code>LogQueue.js:57</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/LogEntry.html" class="crosslink">LogEntry</a> | Undefined</span>:
+                    <p>Oldest log entry in the stack. Undefined if stack is empty.</p>
+
+            </div>
         </div>
+
+
+</div>
+<div id="method_push" class="method item">
+    <h3 class="name"><code>push</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/LogQueue.js.html#l38"><code>LogQueue.js:38</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.</p>
+
+    </div>
+
 
 
 
@@ -274,26 +323,52 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_mediaLine" class="property item">
+<div id="property_mediaLine" class="property item private">
     <h3 class="name"><code>mediaLine</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object[]</a></span>
+    <span class="type"><a href="../classes/AbstractMediaLine.html" class="crosslink">AbstractMediaLine</a></span>
 
 
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/MultiplexedLogger.js.html#l23"><code>MultiplexedLogger.js:23</code></a>
+        <a href="../files/LogQueue.js.html#l22"><code>LogQueue.js:22</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Array of media ({@link module:AbstractMediaLine} derived objects) that this logger will log to.</p>
+        <p>An instance from a concrete implementation of the MediaLine class, that this queue will belong to.</p>
 
+    </div>
+
+
+
+</div>
+<div id="property_queue" class="property item private">
+    <h3 class="name"><code>queue</code></h3>
+    <span class="type"><a href="../classes/LogEntry.html" class="crosslink">LogEntry[]</a></span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/LogQueue.js.html#l30"><code>LogQueue.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
     </div>
 
 

@@ -1,25 +1,44 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "MultiplexedLogger"
-    ],
-    "modules": [
+        "AbstractMediaLine",
         "LogEntry",
         "LogQueue",
-        "MultiplexedLogger"
+        "MultiplexedLogger",
+        "Processor"
+    ],
+    "modules": [
+        "AbstractFileMediaLine",
+        "AsyncFileMediaLine",
+        "ConsoleMediaLine",
+        "MediaLineFactory",
+        "MultiplexedLogger",
+        "SyncFileMediaLine"
     ],
     "allModules": [
         {
-            "displayName": "LogEntry",
-            "name": "LogEntry"
+            "displayName": "AbstractFileMediaLine",
+            "name": "AbstractFileMediaLine"
         },
         {
-            "displayName": "LogQueue",
-            "name": "LogQueue"
+            "displayName": "AsyncFileMediaLine",
+            "name": "AsyncFileMediaLine"
+        },
+        {
+            "displayName": "ConsoleMediaLine",
+            "name": "ConsoleMediaLine"
+        },
+        {
+            "displayName": "MediaLineFactory",
+            "name": "MediaLineFactory"
         },
         {
             "displayName": "MultiplexedLogger",
             "name": "MultiplexedLogger"
+        },
+        {
+            "displayName": "SyncFileMediaLine",
+            "name": "SyncFileMediaLine"
         }
     ],
     "elements": []

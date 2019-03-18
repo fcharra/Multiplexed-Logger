@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LogEntry - Multiplexed-Logger</title>
+    <title>mediaLines\MediaLineFactory.js - Multiplexed-Logger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -38,14 +38,21 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/LogEntry.html">LogEntry</a></li>
+                                <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
+                                <li><a href="../classes/Processor.html">Processor</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/LogEntry.html">LogEntry</a></li>
-                                <li><a href="../modules/LogQueue.html">LogQueue</a></li>
+                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
+                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
+                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
+                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -79,36 +86,54 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>LogEntry Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: mediaLines\MediaLineFactory.js</h1>
 
-        <div class="uses">
-            Requires
-            <ul class="inline commas">
-                    <li>Globals</li>
-                    <li>Helpers</li>
-            </ul>
-        </div>
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+* @module MediaLineFactory
+* @license MIT
+* @author Federico Charra
+*
+* @requires module:AbstractMediaLine
+* @requires module:ConsoleMediaLine
+* @requires module:AsyncFileMediaLine
+* @requires module:SyncFileMediaLine
+* @requires module:NetworkMediaLine
+* @requires Globals
+*/
 
-        <div class="foundat">
-            Defined in: <a href="../files/LogEntry.js.html#l1"><code>LogEntry.js:1</code></a>
-        </div>
+const AbstractMediaLine = require(&#x27;./AbstractMediaLine.js&#x27;);
+const ConsoleMediaLine = require(&#x27;./ConsoleMediaLine.js&#x27;);
+const AsyncFileMediaLine = require(&#x27;./AsyncFileMediaLine.js&#x27;);
+const SyncFileMediaLine = require(&#x27;./SyncFileMediaLine.js&#x27;);
+const NetworkMediaLine = require(&#x27;./NetworkMediaLine.js&#x27;);
+const MPLogger_GLOBALS = require(&#x27;../misc/globals.js&#x27;);
 
-</div>
+/**
+* @function mediaLineFactory
+* @desc Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object&#x27;s media attribute.
+* @param {Object} config - Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
+* @param {(Globals.PRIORITY|string)} config.media - Attribute specifying what media handler to create.
+* @throws {TypeError} Argument config must be a valid type of media.
+* @returns {module:AbstractMediaLine}
+*/
+module.exports = function(config) {
+  switch(config.media) {
+    case &#x27;CONSOLE&#x27;:
+      return new ConsoleMediaLine(config);
+    case &#x27;FILE&#x27;:
+      return new AsyncFileMediaLine(config);
+    case &#x27;SYNC FILE&#x27;:
+      return new SyncFileMediaLine(config);
+    case &#x27;NETWORK&#x27;:
+      return new NetworkMediaLine(config);
+    default:
+      throw new TypeError(&quot;Invalid Argument. Perhaps a typo?&quot;);
+  }
+}
 
-
-<div class="box intro">
-    
-</div>
-
-
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-    </div>
-
-
-    <div class="yui3-u-1-2">
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

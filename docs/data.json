@@ -6,21 +6,76 @@
         "url": "https://github.com/fcharra/Multiplexed-Logger.git"
     },
     "files": {
-        "LogEntry.js": {
-            "name": "LogEntry.js",
+        "mediaLines\\AbstractFileMediaLine.js": {
+            "name": "mediaLines\\AbstractFileMediaLine.js",
             "modules": {
-                "LogEntry": 1
+                "AbstractFileMediaLine": 1
             },
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "LogQueue.js": {
-            "name": "LogQueue.js",
+        "mediaLines\\AbstractMediaLine.js": {
+            "name": "mediaLines\\AbstractMediaLine.js",
+            "modules": {},
+            "classes": {
+                "AbstractMediaLine": 1,
+                "Processor": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "mediaLines\\AsyncFileMediaLine.js": {
+            "name": "mediaLines\\AsyncFileMediaLine.js",
             "modules": {
-                "LogQueue": 1
+                "AsyncFileMediaLine": 1
             },
             "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "mediaLines\\ConsoleMediaLine.js": {
+            "name": "mediaLines\\ConsoleMediaLine.js",
+            "modules": {
+                "ConsoleMediaLine": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "mediaLines\\MediaLineFactory.js": {
+            "name": "mediaLines\\MediaLineFactory.js",
+            "modules": {
+                "MediaLineFactory": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "mediaLines\\SyncFileMediaLine.js": {
+            "name": "mediaLines\\SyncFileMediaLine.js",
+            "modules": {
+                "SyncFileMediaLine": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "LogEntry.js": {
+            "name": "LogEntry.js",
+            "modules": {},
+            "classes": {
+                "LogEntry": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "LogQueue.js": {
+            "name": "LogQueue.js",
+            "modules": {},
+            "classes": {
+                "LogQueue": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -37,38 +92,99 @@
         }
     },
     "modules": {
-        "LogEntry": {
-            "name": "LogEntry",
+        "AbstractFileMediaLine": {
+            "name": "AbstractFileMediaLine",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "AbstractMediaLine": 1,
+                "Processor": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 105,
+            "license": "MIT",
+            "author": "Federico Charra",
+            "requires": [
+                "module:AbstractMediaLine",
+                "Settings"
+            ]
+        },
+        "AsyncFileMediaLine": {
+            "name": "AsyncFileMediaLine",
             "submodules": {},
             "elements": {},
             "classes": {},
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "LogEntry.js",
+            "file": "mediaLines\\AsyncFileMediaLine.js",
             "line": 1,
             "license": "MIT",
             "author": "Federico Charra",
             "requires": [
-                "Globals",
-                "Helpers"
+                "fs",
+                "module:AbstractFileMediaLine"
             ]
         },
-        "LogQueue": {
-            "name": "LogQueue",
+        "ConsoleMediaLine": {
+            "name": "ConsoleMediaLine",
             "submodules": {},
             "elements": {},
             "classes": {},
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "LogQueue.js",
+            "file": "mediaLines\\ConsoleMediaLine.js",
             "line": 1,
             "license": "MIT",
             "author": "Federico Charra",
             "requires": [
                 "module:AbstractMediaLine",
-                "module:LogEntry"
+                "Globals"
+            ]
+        },
+        "MediaLineFactory": {
+            "name": "MediaLineFactory",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "mediaLines\\MediaLineFactory.js",
+            "line": 1,
+            "license": "MIT",
+            "author": "Federico Charra",
+            "requires": [
+                "module:AbstractMediaLine",
+                "module:ConsoleMediaLine",
+                "module:AsyncFileMediaLine",
+                "module:SyncFileMediaLine",
+                "module:NetworkMediaLine",
+                "Globals"
+            ]
+        },
+        "SyncFileMediaLine": {
+            "name": "SyncFileMediaLine",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "LogEntry": 1,
+                "LogQueue": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "LogQueue.js",
+            "line": 15,
+            "license": "MIT",
+            "author": "Federico Charra",
+            "requires": [
+                "fs",
+                "module:AbstractFileMediaLine"
             ]
         },
         "MultiplexedLogger": {
@@ -86,6 +202,112 @@
         }
     },
     "classes": {
+        "AbstractMediaLine": {
+            "name": "AbstractMediaLine",
+            "shortname": "AbstractMediaLine",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "AbstractFileMediaLine",
+            "namespace": "",
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 22,
+            "description": "Media lines specify different media behaviour for processing log entries, and hold reference of those logs that are in their (media line's) levels of verbosity via a private LogQueue object. This class abstracts away logic and attributes common to all the various implementations.",
+            "is_constructor": 1,
+            "extends": "Helpers.Abstract",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration parameters object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "media",
+                            "description": "Type of media to output log entries to.",
+                            "type": "string|Globals.MEDIA"
+                        },
+                        {
+                            "name": "verbosity",
+                            "description": "Level of verbosity for this particular log.",
+                            "type": "string|Globals.PRIORITY"
+                        }
+                    ]
+                }
+            ]
+        },
+        "Processor": {
+            "name": "Processor",
+            "shortname": "Processor",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "AbstractFileMediaLine",
+            "namespace": "",
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 105,
+            "description": "Inner class that abstracts away common logic for processing entries. Concrete instances' processingFunction methods get called internally to delegate logic specific to each kind of media.",
+            "is_constructor": 1
+        },
+        "LogEntry": {
+            "name": "LogEntry",
+            "shortname": "LogEntry",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "SyncFileMediaLine",
+            "namespace": "",
+            "file": "LogEntry.js",
+            "line": 15,
+            "description": "Represents an individual entry in the log.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "priority",
+                    "description": "A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.",
+                    "type": "string|Globals.PRIORITY"
+                },
+                {
+                    "name": "message",
+                    "description": "Message to be logged.",
+                    "type": "String"
+                },
+                {
+                    "name": "time",
+                    "description": "Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)",
+                    "type": "Date",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ]
+        },
+        "LogQueue": {
+            "name": "LogQueue",
+            "shortname": "LogQueue",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "SyncFileMediaLine",
+            "namespace": "",
+            "file": "LogQueue.js",
+            "line": 15,
+            "description": "Represents a queue of log entries, ordered in a FIFO stack.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "mediaLine",
+                    "description": "(Concrete) Medialine owner of this queue.",
+                    "type": "AbstractMediaLine"
+                }
+            ]
+        },
         "MultiplexedLogger": {
             "name": "MultiplexedLogger",
             "shortname": "MultiplexedLogger",
@@ -112,192 +334,646 @@
     "elements": {},
     "classitems": [
         {
-            "file": "LogEntry.js",
-            "line": 13,
-            "classdesc": "Represents an individual entry in the log.",
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 15,
+            "abstract": "",
+            "uses": [
+                "module:AbstractMediaLine"
+            ],
+            "classdesc": "Partial implementation of logging specific to files.",
+            "todo": [
+                "Uncouple JSON file handling by either abstracting away opening and closing of files into abstract functions to be implemented by subclasses",
+                "or dynamically adding functions via a Factory Object.",
+                "Maybe add XML output",
+                "once decoupling of this class is done."
+            ],
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
         },
         {
-            "file": "LogEntry.js",
-            "line": 17,
-            "desc": "Initialize data attributes for this log entry.",
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 23,
+            "abstract": "",
+            "override": "",
+            "desc": "Initialize basic configuration common to all FileMediaLine objects.",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "- Configuration parameters object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "logFile",
+                            "description": "- Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "logFormat",
+                            "description": "- Format to output logs in.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "'PLAIN TEXT'"
+                        }
+                    ]
+                }
+            ],
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 40,
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 47,
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Format to output logs in.",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 54,
+            "package": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Internal state of the file. It can either be:\n'waiting': File is NOT still created or properly formatted. This is an invalid state, and operations on the file should wait until it's changed.\n'blank': File is ready, but no logs have been written yet. Concrete media need to know this, to properly modify the JSON string (remove the first preppended comma.)\n'initiated': File is ready, and logs have already been written to it. So no especial steps need to be taken before using it.",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 72,
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractFileMediaLine.js",
+            "line": 92,
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 18,
+            "mainName": "MultiplexedLogger",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 33,
+            "description": "Type of media to output log entries to.",
+            "access": "public",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "property",
+            "name": "media",
+            "type": "{Globals.MEDIA}",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 41,
+            "description": "Level of verbosity for this particular log.",
+            "access": "public",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "property",
+            "name": "verbosity",
+            "type": "{Globals.PRIORITY}",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 52,
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "property",
+            "name": "queue",
+            "type": "{LogQueue}",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 59,
+            "description": "Inner object that abstracts away common logic for processing entries.",
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "property",
+            "name": "processor",
+            "type": "{Processor}",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 70,
+            "description": "Send a LogEntry with the specified parameters to the queue, to wait in line for processing.",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "log",
             "params": [
                 {
                     "name": "priority",
-                    "description": "- A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.",
-                    "type": "(string|Globals.PRIORITY)"
+                    "description": "Priority of the log entry.",
+                    "type": "Globals.PRIORITY"
                 },
                 {
                     "name": "message",
-                    "description": "- Message to be logged.",
+                    "description": "Data to be logged.",
                     "type": "String"
                 },
                 {
                     "name": "time",
-                    "description": "- Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)",
+                    "description": "Time object to be used as timestamp. If ommited, the log entry will be stamped with the date and time of the log object's creation.",
                     "type": "Date",
                     "optional": true,
                     "optdefault": "null"
                 }
             ],
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 84,
+            "description": "Called from this class' associated LogQueue object to signal the availability of more logs waiting in line for processing. Delegates generic processing to this class' processing object.",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "processNext",
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 93,
+            "description": "!ABSTRACT! Send log entry to be processed by this media instance. Override this method when extending to implement new media. Remember to return a Promise when you do it.",
+            "access": "protected",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "processingFunction",
+            "params": [
+                {
+                    "name": "logEntry",
+                    "description": "Entry object to be logged.",
+                    "type": "LogEntry"
+                }
+            ],
+            "return": {
+                "description": "True if resolved, Error object if rejected.",
+                "type": "Promise"
+            },
+            "class": "AbstractMediaLine",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 111,
+            "description": "Stores a reference to this processor's owner class.",
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "itemtype": "property",
+            "name": "context",
+            "type": "{AbstractMediaLine}",
+            "class": "Processor",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 119,
+            "description": "Indicates to the queue whether the processor is waiting until the media is ready to begin ('waiting'), is ready for more processing ('listening'), or is currently processing a log entry ('busy').",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "property",
+            "name": "state",
+            "type": "{string}",
+            "class": "Processor",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 128,
+            "description": "Used by media to signal they are ready to start receiving logs.",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "mediaIsReady",
+            "class": "Processor",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AbstractMediaLine.js",
+            "line": 138,
+            "description": "Generic processing logic, common to all types of media. processingFunction gets called internally to delegate logic specific to each kind of media.",
+            "access": "protected",
+            "tagname": "",
+            "async": 1,
+            "itemtype": "method",
+            "name": "processEntry",
+            "class": "Processor",
+            "module": "AbstractFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AsyncFileMediaLine.js",
+            "line": 14,
+            "uses": [
+                "module:AbstractFileMediaLine"
+            ],
+            "classdesc": "Implementation of MediaLine specific to asynchronous file logging.",
+            "class": "LogEntry",
+            "module": "AsyncFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AsyncFileMediaLine.js",
+            "line": 19,
+            "override": "",
+            "desc": "Initialize basic configuration for asynchronous file logging.",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "- Configuration parameters object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "logFile",
+                            "description": "- Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "logFormat",
+                            "description": "- Format to output logs in.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "'PLAIN TEXT'"
+                        }
+                    ]
+                }
+            ],
+            "class": "LogEntry",
+            "module": "AsyncFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\AsyncFileMediaLine.js",
+            "line": 30,
+            "uses": [
+                "module:AbstractMediaLine#processingFunction"
+            ],
+            "access": "private",
+            "tagname": "",
+            "instance": "",
+            "itemtype": "method",
+            "name": "processingFunction",
+            "desc": "Logic for async file processing of individual logs.",
+            "params": [
+                {
+                    "name": "logEntry",
+                    "description": "- Entry object to be logged.",
+                    "type": "Module:LogEntry"
+                }
+            ],
+            "return": {
+                "description": "True if resolved, Error object if rejected.",
+                "type": "Promise"
+            },
+            "class": "LogEntry",
+            "module": "AsyncFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\ConsoleMediaLine.js",
+            "line": 13,
+            "uses": [
+                "module:AbstractMediaLine"
+            ],
+            "classdesc": "Implementation of MediaLine specific to console output.",
+            "class": "LogEntry",
+            "module": "ConsoleMediaLine"
+        },
+        {
+            "file": "mediaLines\\ConsoleMediaLine.js",
+            "line": 18,
+            "override": "",
+            "desc": "Initialize basic configuration for console output.",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "- Configuration parameters object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "logFormat",
+                            "description": "- Format to output logs in.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "'PLAIN TEXT'"
+                        }
+                    ]
+                }
+            ],
+            "class": "LogEntry",
+            "module": "ConsoleMediaLine"
+        },
+        {
+            "file": "mediaLines\\ConsoleMediaLine.js",
+            "line": 26,
+            "readonly": "",
+            "itemtype": "method",
+            "name": "",
+            "type": "String",
+            "desc": "Format to output logs in.",
+            "class": "LogEntry",
+            "module": "ConsoleMediaLine"
+        },
+        {
+            "file": "mediaLines\\ConsoleMediaLine.js",
+            "line": 37,
+            "uses": [
+                "module:AbstractMediaLine#processingFunction"
+            ],
+            "access": "private",
+            "tagname": "",
+            "instance": "",
+            "itemtype": "method",
+            "name": "processingFunction",
+            "desc": "Output to error console if priority is higher than Error. Otherwise, output to log console.",
+            "params": [
+                {
+                    "name": "logEntry",
+                    "description": "- Entry object to be logged.",
+                    "type": "Module:LogEntry"
+                }
+            ],
+            "return": {
+                "description": "True if resolved, Error object if rejected.",
+                "type": "Promise"
+            },
+            "class": "LogEntry",
+            "module": "ConsoleMediaLine"
+        },
+        {
+            "file": "mediaLines\\MediaLineFactory.js",
+            "line": 21,
+            "itemtype": "method",
+            "name": "mediaLineFactory",
+            "desc": "Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object's media attribute.",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "- Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "media",
+                            "description": "- Attribute specifying what media handler to create.",
+                            "type": "(Globals.PRIORITY|string)"
+                        }
+                    ]
+                }
+            ],
+            "throws": {
+                "description": "Argument config must be a valid type of media.",
+                "type": "TypeError"
+            },
+            "return": {
+                "description": "",
+                "type": "Module:AbstractMediaLine"
+            },
+            "class": "LogEntry",
+            "module": "MediaLineFactory"
+        },
+        {
+            "file": "mediaLines\\SyncFileMediaLine.js",
+            "line": 13,
+            "uses": [
+                "module:AbstractFileMediaLine"
+            ],
+            "classdesc": "Implementation of MediaLine specific to synchronous file logging.",
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\SyncFileMediaLine.js",
+            "line": 18,
+            "override": "",
+            "desc": "Initialize basic configuration for synchronous file logging.",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "- Configuration parameters object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "logFile",
+                            "description": "- Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "logFormat",
+                            "description": "- Format to output logs in.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "'PLAIN TEXT'"
+                        }
+                    ]
+                }
+            ],
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
+        },
+        {
+            "file": "mediaLines\\SyncFileMediaLine.js",
+            "line": 28,
+            "uses": [
+                "module:AbstractMediaLine#processingFunction"
+            ],
+            "access": "private",
+            "tagname": "",
+            "instance": "",
+            "itemtype": "method",
+            "name": "processingFunction",
+            "desc": "Logic for sync processing of individual logs.",
+            "params": [
+                {
+                    "name": "logEntry",
+                    "description": "- Entry object to be logged.",
+                    "type": "Module:LogEntry"
+                }
+            ],
+            "return": {
+                "description": "True if resolved, Error object if rejected.",
+                "type": "Promise"
+            },
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
+        },
+        {
+            "file": "LogEntry.js",
+            "line": 11,
+            "mainName": "MultiplexedLogger",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
             "line": 27,
-            "package": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "String",
-            "desc": "Time at which the event took place.",
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "description": "Time at which the event took place.",
+            "itemtype": "property",
+            "name": "timestamp",
+            "type": "{string}",
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
             "line": 33,
-            "package": "",
+            "description": "A verbosity value that represents the priority of this entry, as defined in the globals object.",
             "readonly": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "number|Globals.PRIORITY",
-            "desc": "A verbosity value that represents the priority of this entry, as defined in the globals object.",
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "itemtype": "property",
+            "name": "priority",
+            "type": "{number|Globals.PRIORITY}",
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
             "line": 40,
+            "description": "Tag corresponding to the priority level of the object.",
             "access": "private",
             "tagname": "",
             "readonly": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "String",
-            "desc": "Tag corresponding to the priority level of the object.",
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "itemtype": "property",
+            "name": "priorityTag",
+            "type": "{string}",
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
-            "line": 47,
-            "package": "",
+            "line": 48,
+            "description": "Message to be logged.",
             "readonly": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "String",
-            "desc": "Message to be logged.",
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "itemtype": "property",
+            "name": "message",
+            "type": "{string}",
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
-            "line": 57,
-            "instance": "",
+            "line": 58,
+            "description": "Returns a string representing the log entry.",
             "itemtype": "method",
             "name": "toString",
-            "desc": "Returns a string representing the log entry.",
             "return": {
                 "description": "A string representing the log entry.",
                 "type": "String"
             },
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogEntry.js",
             "line": 67,
-            "instance": "",
+            "description": "Returns a JSON-formatted string representing the log entry.",
             "itemtype": "method",
             "name": "toJSONString",
-            "desc": "Returns a JSON-formatted string representing the log entry.",
             "return": {
                 "description": "A JSON-formatted string representing the log entry.",
                 "type": "String"
             },
-            "class": "MultiplexedLogger",
-            "module": "LogEntry"
+            "class": "LogEntry",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
-            "line": 13,
-            "classdesc": "Represents a queue of log entries, ordered in a FIFO stack.",
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "line": 11,
+            "mainName": "MultiplexedLogger",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
-            "line": 17,
-            "params": [
-                {
-                    "name": "mediaLine",
-                    "description": "- An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
-                    "type": "Module:AbstractMediaLine"
-                }
-            ],
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
-        },
-        {
-            "file": "LogQueue.js",
-            "line": 21,
+            "line": 22,
+            "description": "An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
             "access": "private",
             "tagname": "",
             "readonly": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "Module:AbstractMediaLine",
-            "desc": "An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "itemtype": "property",
+            "name": "mediaLine",
+            "type": "{AbstractMediaLine}",
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
-            "line": 28,
+            "line": 30,
             "access": "private",
             "tagname": "",
-            "itemtype": "method",
-            "name": "",
-            "type": "LogEntry[]",
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "itemtype": "property",
+            "name": "queue",
+            "type": "{LogEntry[]}",
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
-            "line": 35,
-            "instance": "",
+            "line": 38,
+            "description": "Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.",
             "itemtype": "method",
             "name": "push",
-            "desc": "Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.",
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
-            "line": 46,
-            "instance": "",
-            "package": "",
+            "line": 48,
+            "description": "Used by this class' associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {{#crossLink \"AbstractMediaLine/processNext:method\"}}its processNext method{{/crossLink}}, so that the processing can continue until the queue is empty.",
             "itemtype": "method",
             "name": "doneProcessing",
-            "desc": "Used by this class' associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {@link module:AbstractMediaLine#processNext}, so that the processing can continue until the queue is empty.",
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "LogQueue.js",
             "line": 57,
-            "instance": "",
+            "description": "Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)",
             "itemtype": "method",
             "name": "next",
-            "desc": "Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)",
             "return": {
-                "description": "Oldest log entry in the stack. Undefined if stack is empty. (Should not need to happen, but safeguards are in place to handle it. Just in case.)",
-                "type": "?module:LogEntry"
+                "description": "Oldest log entry in the stack. Undefined if stack is empty.",
+                "type": "LogEntry|undefined"
             },
-            "class": "MultiplexedLogger",
-            "module": "LogQueue"
+            "class": "LogQueue",
+            "module": "SyncFileMediaLine"
         },
         {
             "file": "MultiplexedLogger.js",
@@ -334,151 +1010,231 @@
     "warnings": [
         {
             "message": "unknown tag: license",
-            "line": " LogEntry.js:1"
+            "line": " mediaLines\\AbstractFileMediaLine.js:1"
+        },
+        {
+            "message": "unknown tag: abstract",
+            "line": " mediaLines\\AbstractFileMediaLine.js:15"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\AbstractFileMediaLine.js:15"
         },
         {
             "message": "unknown tag: classdesc",
-            "line": " LogEntry.js:13"
+            "line": " mediaLines\\AbstractFileMediaLine.js:15"
+        },
+        {
+            "message": "unknown tag: abstract",
+            "line": " mediaLines\\AbstractFileMediaLine.js:23"
+        },
+        {
+            "message": "unknown tag: override",
+            "line": " mediaLines\\AbstractFileMediaLine.js:23"
         },
         {
             "message": "unknown tag: desc",
-            "line": " LogEntry.js:17"
+            "line": " mediaLines\\AbstractFileMediaLine.js:23"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " mediaLines\\AbstractFileMediaLine.js:40"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\AbstractFileMediaLine.js:40"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " mediaLines\\AbstractFileMediaLine.js:47"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\AbstractFileMediaLine.js:47"
         },
         {
             "message": "unknown tag: package",
-            "line": " LogEntry.js:27"
+            "line": " mediaLines\\AbstractFileMediaLine.js:54"
         },
         {
             "message": "replacing incorrect tag: member with method",
-            "line": " LogEntry.js:27"
+            "line": " mediaLines\\AbstractFileMediaLine.js:54"
         },
         {
             "message": "unknown tag: desc",
-            "line": " LogEntry.js:27"
-        },
-        {
-            "message": "unknown tag: package",
-            "line": " LogEntry.js:33"
-        },
-        {
-            "message": "replacing incorrect tag: member with method",
-            "line": " LogEntry.js:33"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogEntry.js:33"
-        },
-        {
-            "message": "replacing incorrect tag: member with method",
-            "line": " LogEntry.js:40"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogEntry.js:40"
-        },
-        {
-            "message": "unknown tag: package",
-            "line": " LogEntry.js:47"
-        },
-        {
-            "message": "replacing incorrect tag: member with method",
-            "line": " LogEntry.js:47"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogEntry.js:47"
-        },
-        {
-            "message": "unknown tag: instance",
-            "line": " LogEntry.js:57"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogEntry.js:57"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " LogEntry.js:57"
-        },
-        {
-            "message": "unknown tag: instance",
-            "line": " LogEntry.js:67"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogEntry.js:67"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " LogEntry.js:67"
+            "line": " mediaLines\\AbstractFileMediaLine.js:54"
         },
         {
             "message": "unknown tag: license",
-            "line": " LogQueue.js:1"
+            "line": " mediaLines\\AsyncFileMediaLine.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\AsyncFileMediaLine.js:14"
         },
         {
             "message": "unknown tag: classdesc",
-            "line": " LogQueue.js:13"
+            "line": " mediaLines\\AsyncFileMediaLine.js:14"
         },
         {
-            "message": "replacing incorrect tag: member with method",
-            "line": " LogQueue.js:21"
+            "message": "unknown tag: override",
+            "line": " mediaLines\\AsyncFileMediaLine.js:19"
         },
         {
             "message": "unknown tag: desc",
-            "line": " LogQueue.js:21"
+            "line": " mediaLines\\AsyncFileMediaLine.js:19"
         },
         {
-            "message": "replacing incorrect tag: member with method",
-            "line": " LogQueue.js:28"
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\AsyncFileMediaLine.js:30"
         },
         {
             "message": "unknown tag: instance",
-            "line": " LogQueue.js:35"
+            "line": " mediaLines\\AsyncFileMediaLine.js:30"
         },
         {
             "message": "unknown tag: desc",
-            "line": " LogQueue.js:35"
-        },
-        {
-            "message": "unknown tag: instance",
-            "line": " LogQueue.js:46"
-        },
-        {
-            "message": "unknown tag: package",
-            "line": " LogQueue.js:46"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogQueue.js:46"
-        },
-        {
-            "message": "unknown tag: instance",
-            "line": " LogQueue.js:57"
-        },
-        {
-            "message": "unknown tag: desc",
-            "line": " LogQueue.js:57"
+            "line": " mediaLines\\AsyncFileMediaLine.js:30"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " LogQueue.js:57"
+            "line": " mediaLines\\AsyncFileMediaLine.js:30"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " mediaLines\\ConsoleMediaLine.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\ConsoleMediaLine.js:13"
+        },
+        {
+            "message": "unknown tag: classdesc",
+            "line": " mediaLines\\ConsoleMediaLine.js:13"
+        },
+        {
+            "message": "unknown tag: override",
+            "line": " mediaLines\\ConsoleMediaLine.js:18"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\ConsoleMediaLine.js:18"
+        },
+        {
+            "message": "replacing incorrect tag: member with method",
+            "line": " mediaLines\\ConsoleMediaLine.js:26"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\ConsoleMediaLine.js:26"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\ConsoleMediaLine.js:37"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " mediaLines\\ConsoleMediaLine.js:37"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\ConsoleMediaLine.js:37"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " mediaLines\\ConsoleMediaLine.js:37"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " mediaLines\\MediaLineFactory.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " mediaLines\\MediaLineFactory.js:21"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\MediaLineFactory.js:21"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " mediaLines\\MediaLineFactory.js:21"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " mediaLines\\SyncFileMediaLine.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\SyncFileMediaLine.js:13"
+        },
+        {
+            "message": "unknown tag: classdesc",
+            "line": " mediaLines\\SyncFileMediaLine.js:13"
+        },
+        {
+            "message": "unknown tag: override",
+            "line": " mediaLines\\SyncFileMediaLine.js:18"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\SyncFileMediaLine.js:18"
+        },
+        {
+            "message": "replacing incorrect tag: augments with uses",
+            "line": " mediaLines\\SyncFileMediaLine.js:28"
+        },
+        {
+            "message": "unknown tag: instance",
+            "line": " mediaLines\\SyncFileMediaLine.js:28"
+        },
+        {
+            "message": "unknown tag: desc",
+            "line": " mediaLines\\SyncFileMediaLine.js:28"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " mediaLines\\SyncFileMediaLine.js:28"
         },
         {
             "message": "Missing item type",
-            "line": " LogEntry.js:13"
+            "line": " mediaLines\\AbstractFileMediaLine.js:15"
         },
         {
             "message": "Missing item type",
-            "line": " LogEntry.js:17"
+            "line": " mediaLines\\AbstractFileMediaLine.js:23"
         },
         {
             "message": "Missing item type",
-            "line": " LogQueue.js:13"
+            "line": " mediaLines\\AbstractFileMediaLine.js:72"
         },
         {
             "message": "Missing item type",
-            "line": " LogQueue.js:17"
+            "line": " mediaLines\\AbstractFileMediaLine.js:92"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\AsyncFileMediaLine.js:14"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\AsyncFileMediaLine.js:19"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\ConsoleMediaLine.js:13"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\ConsoleMediaLine.js:18"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\SyncFileMediaLine.js:13"
+        },
+        {
+            "message": "Missing item type",
+            "line": " mediaLines\\SyncFileMediaLine.js:18"
         }
     ]
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LogEntry.js - Multiplexed-Logger</title>
+    <title>mediaLines\AbstractFileMediaLine.js - Multiplexed-Logger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,88 +86,113 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: LogEntry.js</h1>
+<h1 class="file-heading">File: mediaLines\AbstractFileMediaLine.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/* @license MIT
+/**
+* @module AbstractFileMediaLine
+* @license MIT
 * @author Federico Charra
 *
-* @requires Globals
-* @requires Helpers
+* @requires module:AbstractMediaLine
+* @requires Settings
 */
 
-const MPLogger_GLOBALS = require(&#x27;./misc/globals.js&#x27;);
-const helpers = require(&#x27;./misc/helpers.js&#x27;);
+const fs = require(&#x27;fs&#x27;);
+
+const MPLogger_SETTINGS = require(&#x27;../misc/settings.js&#x27;);
+const AbstractMediaLine = require(&#x27;./AbstractMediaLine.js&#x27;);
 
 /**
-* @main MultiplexedLogger
+* @abstract
+* @augments module:AbstractMediaLine
+* @classdesc Partial implementation of logging specific to files.
+* @todo Uncouple JSON file handling by either abstracting away opening and closing of files into abstract functions to be implemented by subclasses, or dynamically adding functions via a Factory Object.
+@todo Maybe add XML output, once decoupling of this class is done.
 */
-module.exports = class LogEntry {
+module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
   /**
-  * Represents an individual entry in the log.
-  * @class LogEntry
-  * @constructor
-  * @param {string|Globals.PRIORITY} priority A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.
-  * @param {string} message Message to be logged.
-  * @param {Date} [time=null] Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)
+  * @abstract
+  * @override
+  * @desc Initialize basic configuration common to all FileMediaLine objects.
+  * @param {Object} config - Configuration parameters object.
+  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] - Format to output logs in.
   */
-  constructor(priority, message, time = null) {
-    if (!time || !(time instanceof Date))
-      time = new Date();
+  constructor(config) {
+    super(config);
+
+    // Make class abstract
+    if (new.target === this) {
+      throw new TypeError(&quot;Cannot construct Abstract instances directly&quot;);
+    }
+
+    // Settings specific to log files
+    /**
+    * @readonly
+    * @member {string}
+    * @desc String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+    */
+    this.logFile = config.logFile ||
+                   MPLogger_SETTINGS.OUT_DIR + MPLogger_SETTINGS.OUT_FILE;
+    /**
+    * @readonly
+    * @member {string}
+    * @desc Format to output logs in.
+    */
+    this.logFormat = config.logFormat || &#x27;PLAIN TEXT&#x27;;
 
     /**
-    * Time at which the event took place.
-    * @property timestamp
-    * @type {string}
+    * @package
+    * @member {string}
+    * @desc Internal state of the file. It can either be:
+    * &#x27;waiting&#x27;: File is NOT still created or properly formatted. This is an invalid state, and operations on the file should wait until it&#x27;s changed.
+    * &#x27;blank&#x27;: File is ready, but no logs have been written yet. Concrete media need to know this, to properly modify the JSON string (remove the first preppended comma.)
+    * &#x27;initiated&#x27;: File is ready, and logs have already been written to it. So no especial steps need to be taken before using it.
     */
-    this.timestamp = time.toISOString();
-    /**
-    * A verbosity value that represents the priority of this entry, as defined in the globals object.
-    * @readonly
-    * @property priority
-    * @type {number|Globals.PRIORITY}
-    */
-    this.priority = helpers.parsePriority(priority);
-    /**
-    * Tag corresponding to the priority level of the object.
-    * @private
-    * @readonly
-    * @property priorityTag
-    * @type {string}
-    */
-    this.priorityTag = MPLogger_GLOBALS.PRIORITY.properties[this.priority].tag;
-    /**
-    * Message to be logged.
-    * @readonly
-    * @property message
-    * @type {string}
-    */
-    this.message = message;
+    this.fileState = &#x27;waiting&#x27;;
+
+    // Initializing the JSON file and properly closing it on exit.
+    if (this.logFormat === &#x27;JSON&#x27;) {
+      this._initializeJSONFile();
+      process.on(&#x27;exit&#x27;, () =&gt; this._closeJSONFile() );
+    }
+
   }
 
+  /** @ignore */
+  _initializeJSONFile() {
+    /* Processor waits until file is created and properly formatted, then signals it to start requesting logs from the queue.
+    *  If log file already exists, writeFile will delete before proceding.
+    */
+    fs.writeFile(this.logFile, &#x27;{&#x27;, &#x27;utf8&#x27;, (err) =&gt; {
+      if (err) {
+        console.error(&#x27;FATAL ERROR: Could not create file.&#x27;);
+        throw Error(err);
+      }
 
-  /**
-  * Returns a string representing the log entry.
-  * @method toString
-  * @return {string} A string representing the log entry.
-  */
-  toString() {
-    return &#x60;${this.timestamp} - \(${this.priorityTag}\): ${this.message}&#x60;;
+      this.fileState = &#x27;blank&#x27;;
+      // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
+      this.processor.mediaIsReady();
+    });
   }
 
-  /**
-  * Returns a JSON-formatted string representing the log entry.
-  * @method toJSONString
-  * @return {string} A JSON-formatted string representing the log entry.
+  /* Closing the file is done synchronously. Otherwise, it doesn&#x27;t gets done before closing.
+  *  Reading and rewriting the entire file synchronously has now been changed to a single sync append, which still should reduce thread locking significantly.
   */
-  toJSONString() {
-    let entry = &#x60;,\n\t&quot;${this.timestamp}&quot;: {
-      \t\t&quot;Priority&quot;: ${this.priority},
-      \t\t&quot;Priority tag&quot;: &quot;${this.priorityTag}&quot;,
-      \t\t&quot;Message&quot;: &quot;${this.message}&quot;\n\t}&#x60;;
-
-    return entry;
+  /** @ignore */
+  _closeJSONFile() {
+    try {
+      fs.appendFileSync(this.logFile, &#x27;\n}&#x27;, &#x27;utf8&#x27;);
+    }
+    catch(err) {
+      /* Failing to close will not be considered a fatal error, since the file can still be easily fixed by hand.
+      * It will, however, be logged to standard error console.
+      */
+      console.error(&#x27;Could not properly close JSON log. &#x27; + Error(err));
+      return;
+    }
   }
 
 }
