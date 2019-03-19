@@ -38,21 +38,20 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
                                 <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../classes/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
                                 <li><a href="../classes/LogEntry.html">LogEntry</a></li>
                                 <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
                                 <li><a href="../classes/Processor.html">Processor</a></li>
+                                <li><a href="../classes/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
-                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
-                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
-                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
-                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,50 +89,42 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
-* @module ConsoleMediaLine
-* @license MIT
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires Globals
-*/
-
 const AbstractMediaLine = require(&#x27;./AbstractMediaLine.js&#x27;);
 const MPLogger_GLOBALS = require(&#x27;../misc/globals.js&#x27;);
 
 /**
-* @augments module:AbstractMediaLine
-* @classdesc Implementation of MediaLine specific to console output.
+@main MultiplexedLogger
 */
 module.exports = class ConsoleMediaLine extends AbstractMediaLine {
   /**
-  * @override
-  * @desc Initialize basic configuration for console output.
-  * @param {Object} config - Configuration parameters object.
-  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] - Format to output logs in.
+  * Initialize basic configuration for console output.
+  * @class ConsoleMediaLine
+  * @constructor
+  * @extends AbstractMediaLine
+  * @param {Object} config Configuration parameters object. Inherits all of {{#crossLink &quot;AbstractMediaLine&quot;}}{{/crossLink}}&#x27;s config object parameters, plus the following:
+  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] Format to output logs in.
   */
   constructor(config) {
     super(config);
     /**
-    * @readonly
-    * @member {string}
-    * @desc Format to output logs in.
+    * Format to output logs in.
+    * @private
+    * @writeOnce
+    * @property logFormat
+    * @type {string}
     */
     this.logFormat = config.logFormat || &#x27;PLAIN TEXT&#x27;;
 
-    // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
+    // Inform the processor this media is ready to process.
     this.processor.mediaIsReady();
   }
 
   /**
-  * @augments module:AbstractMediaLine#processingFunction
+  * Output to error console if priority is higher than Error. Otherwise, output to log console.
   * @private
-  * @instance
   * @method processingFunction
-  * @desc Output to error console if priority is higher than Error. Otherwise, output to log console.
-  * @param {module:LogEntry} logEntry - Entry object to be logged.
-  * @returns {Promise} True if resolved, Error object if rejected.
+  * @param {LogEntry} logEntry Entry object to be logged.
+  * @return {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
     let logString = (this.logFormat === &#x27;JSON&#x27;)? logEntry.toJSONString() : logEntry.toString();

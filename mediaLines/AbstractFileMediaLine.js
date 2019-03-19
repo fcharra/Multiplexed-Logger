@@ -1,32 +1,22 @@
-/**
-* @module AbstractFileMediaLine
-* @license MIT
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires Settings
-*/
-
 const fs = require('fs');
 
 const MPLogger_SETTINGS = require('../misc/settings.js');
 const AbstractMediaLine = require('./AbstractMediaLine.js');
 
 /**
-* @abstract
-* @augments module:AbstractMediaLine
-* @classdesc Partial implementation of logging specific to files.
-* @todo Uncouple JSON file handling by either abstracting away opening and closing of files into abstract functions to be implemented by subclasses, or dynamically adding functions via a Factory Object.
-@todo Maybe add XML output, once decoupling of this class is done.
+* @main MultiplexedLogger
 */
 module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
   /**
-  * @abstract
-  * @override
-  * @desc Initialize basic configuration common to all FileMediaLine objects.
-  * @param {Object} config - Configuration parameters object.
-  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
-  * @param {string} [config.logFormat='PLAIN TEXT'] - Format to output logs in.
+  * Partial implementation of logging specific to files.
+  * TODO: Uncouple JSON file handling by either abstracting away opening and closing of files into abstract functions to be implemented by subclasses, or dynamically adding functions via a Factory Object.
+  * TODO: Maybe add XML output, once decoupling of this class is done.
+  * @class AbstractFileMediaLine
+  * @constructor
+  * @extends AbstractMediaLine
+  * @param {Object} config Configuration parameters object. Inherits all of {{#crossLink "AbstractMediaLine"}}{{/crossLink}}'s config object parameters, plus the following:
+  * @param {string} config.logFile Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat='PLAIN TEXT'] Format to output logs in.
   */
   constructor(config) {
     super(config);
@@ -38,26 +28,31 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
 
     // Settings specific to log files
     /**
-    * @readonly
-    * @member {string}
-    * @desc String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+    * String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+    * @protected
+    * @writeOnce
+    * @property logFile
+    * @type {string}
     */
     this.logFile = config.logFile ||
                    MPLogger_SETTINGS.OUT_DIR + MPLogger_SETTINGS.OUT_FILE;
     /**
-    * @readonly
-    * @member {string}
-    * @desc Format to output logs in.
+    * Format to output logs in.
+    * @protected
+    * @writeOnce
+    * @property logFormat
+    * @type {string}
     */
     this.logFormat = config.logFormat || 'PLAIN TEXT';
 
     /**
-    * @package
-    * @member {string}
-    * @desc Internal state of the file. It can either be:
+    * Internal state of the file. It can either be:
     * 'waiting': File is NOT still created or properly formatted. This is an invalid state, and operations on the file should wait until it's changed.
     * 'blank': File is ready, but no logs have been written yet. Concrete media need to know this, to properly modify the JSON string (remove the first preppended comma.)
     * 'initiated': File is ready, and logs have already been written to it. So no especial steps need to be taken before using it.
+    * @public
+    * @property
+    * @type {string}
     */
     this.fileState = 'waiting';
 
@@ -69,7 +64,6 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
 
   }
 
-  /** @ignore */
   _initializeJSONFile() {
     /* Processor waits until file is created and properly formatted, then signals it to start requesting logs from the queue.
     *  If log file already exists, writeFile will delete before proceding.
@@ -89,7 +83,6 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
   /* Closing the file is done synchronously. Otherwise, it doesn't gets done before closing.
   *  Reading and rewriting the entire file synchronously has now been changed to a single sync append, which still should reduce thread locking significantly.
   */
-  /** @ignore */
   _closeJSONFile() {
     try {
       fs.appendFileSync(this.logFile, '\n}', 'utf8');

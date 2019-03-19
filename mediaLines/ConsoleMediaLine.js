@@ -1,47 +1,39 @@
-/**
-* @module ConsoleMediaLine
-* @license MIT
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires Globals
-*/
-
 const AbstractMediaLine = require('./AbstractMediaLine.js');
 const MPLogger_GLOBALS = require('../misc/globals.js');
 
 /**
-* @augments module:AbstractMediaLine
-* @classdesc Implementation of MediaLine specific to console output.
+@main MultiplexedLogger
 */
 module.exports = class ConsoleMediaLine extends AbstractMediaLine {
   /**
-  * @override
-  * @desc Initialize basic configuration for console output.
-  * @param {Object} config - Configuration parameters object.
-  * @param {string} [config.logFormat='PLAIN TEXT'] - Format to output logs in.
+  * Initialize basic configuration for console output.
+  * @class ConsoleMediaLine
+  * @constructor
+  * @extends AbstractMediaLine
+  * @param {Object} config Configuration parameters object. Inherits all of {{#crossLink "AbstractMediaLine"}}{{/crossLink}}'s config object parameters, plus the following:
+  * @param {string} [config.logFormat='PLAIN TEXT'] Format to output logs in.
   */
   constructor(config) {
     super(config);
     /**
-    * @readonly
-    * @member {string}
-    * @desc Format to output logs in.
+    * Format to output logs in.
+    * @private
+    * @writeOnce
+    * @property logFormat
+    * @type {string}
     */
     this.logFormat = config.logFormat || 'PLAIN TEXT';
 
-    // Inform the processor this media is ready to process. (@todo Refactor this into a method.)
+    // Inform the processor this media is ready to process.
     this.processor.mediaIsReady();
   }
 
   /**
-  * @augments module:AbstractMediaLine#processingFunction
+  * Output to error console if priority is higher than Error. Otherwise, output to log console.
   * @private
-  * @instance
   * @method processingFunction
-  * @desc Output to error console if priority is higher than Error. Otherwise, output to log console.
-  * @param {module:LogEntry} logEntry - Entry object to be logged.
-  * @returns {Promise} True if resolved, Error object if rejected.
+  * @param {LogEntry} logEntry Entry object to be logged.
+  * @return {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
     let logString = (this.logFormat === 'JSON')? logEntry.toJSONString() : logEntry.toString();

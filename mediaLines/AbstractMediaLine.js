@@ -1,13 +1,3 @@
-/*
-* @license MIT
-* @author Federico Charra
-*
-* @requires Settings
-* @requires Helpers
-* @requires module:LogEntry
-* @requires module:LogQueue
-*/
-
 const MPLogger_SETTINGS = require('../misc/settings.js');
 
 const helpers = require('../misc/helpers.js');
@@ -33,7 +23,7 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
     /**
     * Type of media to output log entries to.
     * @public
-    * @readonly
+    * @writeOnce
     * @property media
     * @type {Globals.MEDIA}
     */
@@ -41,7 +31,7 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
     /**
     * Level of verbosity for this particular log.
     * @public
-    * @readonly
+    * @writeOnce
     * @property verbosity
     * @type {Globals.PRIORITY}
     */
@@ -50,16 +40,16 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
                        MPLogger_SETTINGS.DEFAULT_VERBOSITY
                      );
     /**
-    * @private
-    * @readonly
+    * @protected
+    * @writeOnce
     * @property queue
     * @type {LogQueue}
     */
     this.queue = new LogQueue(this);
     /**
     * Inner object that abstracts away common logic for processing entries.
-    * @private
-    * @readonly
+    * @protected
+    * @writeOnce
     * @property processor
     * @type {Processor}
     */
@@ -110,15 +100,15 @@ class Processor {
   constructor(context) {
     /**
     * Stores a reference to this processor's owner class.
-    * @private
-    * @readonly
+    * @protected
+    * @writeOnce
     * @property context
     * @type {AbstractMediaLine}
     */
     this.context = context;
     /**
     * Indicates to the queue whether the processor is waiting until the media is ready to begin ('waiting'), is ready for more processing ('listening'), or is currently processing a log entry ('busy').
-    * @private
+    * @protected
     * @property state
     * @type {string}
     */

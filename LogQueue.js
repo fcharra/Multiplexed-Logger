@@ -1,10 +1,3 @@
-/*
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires module:LogEntry
-*/
-
 const AbstractMediaLine = require('./mediaLines/AbstractMediaLine.js');
 const LogEntry = require('./LogEntry.js');
 
@@ -22,7 +15,7 @@ module.exports = class LogQueue {
     /**
     * An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
     * @private
-    * @readonly
+    * @writeOnce
     * @property mediaLine
     * @type {AbstractMediaLine}
     */

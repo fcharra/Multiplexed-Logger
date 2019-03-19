@@ -38,21 +38,20 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
                                 <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../classes/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
                                 <li><a href="../classes/LogEntry.html">LogEntry</a></li>
                                 <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
                                 <li><a href="../classes/Processor.html">Processor</a></li>
+                                <li><a href="../classes/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
-                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
-                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
-                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
-                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,13 +89,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*
-* @license MIT
-* @requires MediaLineFactory
-* @requires AbstractMediaLine
-* @requires Globals
-*/
-
 const MediaLineFactory = require(&#x27;./mediaLines/MediaLineFactory.js&#x27;);
 const AbstractMediaLine = require(&#x27;./mediaLines/AbstractMediaLine.js&#x27;);
 const MPLogger_GLOBALS = require(&#x27;./misc/globals.js&#x27;);
@@ -106,7 +98,7 @@ const MPLogger_GLOBALS = require(&#x27;./misc/globals.js&#x27;);
 */
 module.exports = class Logger {
   /**
-  * Logger&#x27;s main entry point. Instantiate with proper configurations for each media, then use calling the MultiplexedLogger.log method.
+  * Logger&#x27;s main entry point. Instantiate with proper configurations for each media, then use calling the {{#crossLink &quot;MultiplexedLogger/log:method&quot;}}{{/crossLink}} method.
   * @class MultiplexedLogger
   * @constructor
   * @param {Object[]} configArray Array of configurations. (Vary for each media.)
@@ -114,6 +106,7 @@ module.exports = class Logger {
   constructor(configArray) {
     /**
     * Array of media ({@link module:AbstractMediaLine} derived objects) that this logger will log to.
+    * @public
     * @property mediaLine
     * @type {Object[]}
     */
@@ -126,6 +119,7 @@ module.exports = class Logger {
 
   /**
   * Log to all configured media, a given message with a given priority.
+  * @public
   * @method log
   * @param {string|Globals.PRIORITY} priority A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.
   * @param {string} message The message to be logged.

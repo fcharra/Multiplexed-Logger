@@ -1,38 +1,30 @@
-/**
-* @module SyncFileMediaLine
-* @license MIT
-* @author Federico Charra
-*
-* @requires fs
-* @requires module:AbstractFileMediaLine
-*/
 const fs = require('fs');
 
 const AbstractFileMediaLine = require('./AbstractFileMediaLine.js');
 
 /**
-* @augments module:AbstractFileMediaLine
-* @classdesc Implementation of MediaLine specific to synchronous file logging.
+* @main MultiplexedLogger
 */
 module.exports = class SyncFileMediaLine extends AbstractFileMediaLine {
   /**
-  * @override
-  * @desc Initialize basic configuration for synchronous file logging.
-  * @param {Object} config - Configuration parameters object.
-  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
-  * @param {string} [config.logFormat='PLAIN TEXT'] - Format to output logs in.
+  * Implementation of MediaLine specific to synchronous file logging.
+  * @class SyncFileMediaLine
+  * @constructor
+  * @extends AbstractFileMediaLine
+  * @param {Object} config Configuration parameters object. Inherits all of {{#crossLink "AbstractMediaLine"}}{{/crossLink}}'s config object parameters, plus the following:
+  * @param {string} config.logFile Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat='PLAIN TEXT'] Format to output logs in.
   */
   constructor(config) {
     super(config);
   }
+
   /**
-  * @augments module:AbstractMediaLine#processingFunction
+  * Logic for sync file processing of individual logs.
   * @private
-  * @instance
   * @method processingFunction
-  * @desc Logic for sync processing of individual logs.
-  * @param {module:LogEntry} logEntry - Entry object to be logged.
-  * @returns {Promise} True if resolved, Error object if rejected.
+  * @param {LogEntry} logEntry Entry object to be logged.
+  * @return {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
     let logString = (this.logFormat === 'JSON')? logEntry.toJSONString() : (logEntry.toString() + '\n');
@@ -44,7 +36,7 @@ module.exports = class SyncFileMediaLine extends AbstractFileMediaLine {
           logString = logString.replace(',\n\t', '\n\t');
           this.fileState = 'initiated';
         }
-        
+
         fs.appendFileSync(this.logFile, logString, 'utf8');
         resolve(true);
       }

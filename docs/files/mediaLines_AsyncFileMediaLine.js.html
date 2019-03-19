@@ -38,21 +38,20 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
                                 <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../classes/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
                                 <li><a href="../classes/LogEntry.html">LogEntry</a></li>
                                 <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
                                 <li><a href="../classes/Processor.html">Processor</a></li>
+                                <li><a href="../classes/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
-                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
-                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
-                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
-                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,43 +89,33 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
-* @module AsyncFileMediaLine
-* @license MIT
-* @author Federico Charra
-*
-* @requires fs
-* @requires module:AbstractFileMediaLine
-*/
-
 const fs = require(&#x27;fs&#x27;);
 
 const AbstractFileMediaLine = require(&#x27;./AbstractFileMediaLine.js&#x27;);
 
 /**
-* @augments module:AbstractFileMediaLine
-* @classdesc Implementation of MediaLine specific to asynchronous file logging.
+@main MultiplexedLogger
 */
 module.exports = class AsyncFileMediaLine extends AbstractFileMediaLine {
   /**
-  * @override
-  * @desc Initialize basic configuration for asynchronous file logging.
-  * @param {Object} config - Configuration parameters object.
-  * @param {string} config.logFile - Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
-  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] - Format to output logs in.
+  * Implementation of MediaLine specific to asynchronous file logging.
+  * @class AsyncFileMediaLine
+  * @constructor
+  * @extends AbstractFileMediaLine
+  * @param {Object} config Configuration parameters object. Inherits all of {{#crossLink &quot;AbstractMediaLine&quot;}}{{/crossLink}}&#x27;s config object parameters, plus the following:
+  * @param {string} config.logFile Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
+  * @param {string} [config.logFormat=&#x27;PLAIN TEXT&#x27;] Format to output logs in.
   */
   constructor(config) {
     super(config);
   }
 
   /**
-  * @augments module:AbstractMediaLine#processingFunction
+  * Logic for async file processing of individual logs.
   * @private
-  * @instance
   * @method processingFunction
-  * @desc Logic for async file processing of individual logs.
-  * @param {module:LogEntry} logEntry - Entry object to be logged.
-  * @returns {Promise} True if resolved, Error object if rejected.
+  * @param {LogEntry} logEntry Entry object to be logged.
+  * @return {Promise} True if resolved, Error object if rejected.
   */
   processingFunction(logEntry) {
     let logString = (this.logFormat === &#x27;JSON&#x27;)? logEntry.toJSONString() : (logEntry.toString() + &#x27;\n&#x27;);

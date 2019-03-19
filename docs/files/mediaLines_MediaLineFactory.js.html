@@ -38,21 +38,20 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
                                 <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../classes/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
                                 <li><a href="../classes/LogEntry.html">LogEntry</a></li>
                                 <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
                                 <li><a href="../classes/Processor.html">Processor</a></li>
+                                <li><a href="../classes/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
-                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
-                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
-                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
-                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,19 +89,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
-* @module MediaLineFactory
-* @license MIT
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires module:ConsoleMediaLine
-* @requires module:AsyncFileMediaLine
-* @requires module:SyncFileMediaLine
-* @requires module:NetworkMediaLine
-* @requires Globals
-*/
-
 const AbstractMediaLine = require(&#x27;./AbstractMediaLine.js&#x27;);
 const ConsoleMediaLine = require(&#x27;./ConsoleMediaLine.js&#x27;);
 const AsyncFileMediaLine = require(&#x27;./AsyncFileMediaLine.js&#x27;);
@@ -111,12 +97,12 @@ const NetworkMediaLine = require(&#x27;./NetworkMediaLine.js&#x27;);
 const MPLogger_GLOBALS = require(&#x27;../misc/globals.js&#x27;);
 
 /**
-* @function mediaLineFactory
-* @desc Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object&#x27;s media attribute.
-* @param {Object} config - Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
-* @param {(Globals.PRIORITY|string)} config.media - Attribute specifying what media handler to create.
+* Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object&#x27;s media attribute.
+* @main MultiplexedLogger
+* @param {Object} config Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
+* @param {Globals.PRIORITY|string} config.media Attribute specifying what media handler to create.
 * @throws {TypeError} Argument config must be a valid type of media.
-* @returns {module:AbstractMediaLine}
+* @return {AbstractMediaLine}
 */
 module.exports = function(config) {
   switch(config.media) {

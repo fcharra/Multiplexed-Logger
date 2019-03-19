@@ -1,10 +1,3 @@
-/* @license MIT
-* @author Federico Charra
-*
-* @requires Globals
-* @requires Helpers
-*/
-
 const MPLogger_GLOBALS = require('./misc/globals.js');
 const helpers = require('./misc/helpers.js');
 
@@ -32,7 +25,7 @@ module.exports = class LogEntry {
     this.timestamp = time.toISOString();
     /**
     * A verbosity value that represents the priority of this entry, as defined in the globals object.
-    * @readonly
+    * @writeOnce
     * @property priority
     * @type {number|Globals.PRIORITY}
     */
@@ -40,14 +33,14 @@ module.exports = class LogEntry {
     /**
     * Tag corresponding to the priority level of the object.
     * @private
-    * @readonly
+    * @writeOnce
     * @property priorityTag
     * @type {string}
     */
     this.priorityTag = MPLogger_GLOBALS.PRIORITY.properties[this.priority].tag;
     /**
     * Message to be logged.
-    * @readonly
+    * @writeOnce
     * @property message
     * @type {string}
     */

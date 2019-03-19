@@ -1,6 +1,6 @@
 {
   "name": "Multiplexed-Logger",
-  "description": "Simultaneously log to multiple media with a singleline of code in NodeJS. Supports logging to console and file (syncand async). Supports both plain text and JSON formats. Logging to adatabse and to a server via HTTP are planned in a future version.",
+  "description": "Simultaneously log to multiple media with a singleline of code in NodeJS. Supports logging to console and file (syncand async). Supports both plain text and JSON formats. Logging to a databse and to a server via HTTP are planned in a future version.",
   "version": "0.0.1",
   "url": "https://github.com/fcharra/Multiplexed-Logger.git",
   "options": {

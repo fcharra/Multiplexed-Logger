@@ -1,9 +1,14 @@
 const MPLogger_GLOBALS = require('./globals.js');
 
-/** @namespace Helpers */
 module.exports = {
 
   Abstract: class {
+    /**
+    * Duck-tape fix to provide Abstract capability to javascript.
+    * @class Abstract
+    * @constructor
+    * @throws {TypeError} When code tries to instantiate it directly with the new keyword.
+    */
     constructor() {
       if (new.target === this) {
         throw new TypeError("Cannot construct Abstract instances directly");
@@ -11,6 +16,7 @@ module.exports = {
     }
   },
 
+  // Parser for priority arguments.
   parsePriority: function(priority) {
     if (typeof priority === 'number') {
       if (priority >= MPLogger_GLOBALS.PRIORITY.SECURITY_ALERT && priority <= MPLogger_GLOBALS.PRIORITY.VERBOSE)

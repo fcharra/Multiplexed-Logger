@@ -1,16 +1,3 @@
-/**
-* @module MediaLineFactory
-* @license MIT
-* @author Federico Charra
-*
-* @requires module:AbstractMediaLine
-* @requires module:ConsoleMediaLine
-* @requires module:AsyncFileMediaLine
-* @requires module:SyncFileMediaLine
-* @requires module:NetworkMediaLine
-* @requires Globals
-*/
-
 const AbstractMediaLine = require('./AbstractMediaLine.js');
 const ConsoleMediaLine = require('./ConsoleMediaLine.js');
 const AsyncFileMediaLine = require('./AsyncFileMediaLine.js');
@@ -19,12 +6,12 @@ const NetworkMediaLine = require('./NetworkMediaLine.js');
 const MPLogger_GLOBALS = require('../misc/globals.js');
 
 /**
-* @function mediaLineFactory
-* @desc Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object's media attribute.
-* @param {Object} config - Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
-* @param {(Globals.PRIORITY|string)} config.media - Attribute specifying what media handler to create.
+* Return a new, properly configured instance of the Media Line subclass corresponding to the passed configuration object's media attribute.
+* @main MultiplexedLogger
+* @param {Object} config Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.
+* @param {Globals.PRIORITY|string} config.media Attribute specifying what media handler to create.
 * @throws {TypeError} Argument config must be a valid type of media.
-* @returns {module:AbstractMediaLine}
+* @return {AbstractMediaLine}
 */
 module.exports = function(config) {
   switch(config.media) {

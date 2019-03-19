@@ -38,21 +38,20 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
                                 <li><a href="../classes/AbstractMediaLine.html">AbstractMediaLine</a></li>
+                                <li><a href="../classes/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
+                                <li><a href="../classes/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
                                 <li><a href="../classes/LogEntry.html">LogEntry</a></li>
                                 <li><a href="../classes/LogQueue.html">LogQueue</a></li>
                                 <li><a href="../classes/MultiplexedLogger.html">MultiplexedLogger</a></li>
                                 <li><a href="../classes/Processor.html">Processor</a></li>
+                                <li><a href="../classes/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/AbstractFileMediaLine.html">AbstractFileMediaLine</a></li>
-                                <li><a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a></li>
-                                <li><a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a></li>
-                                <li><a href="../modules/MediaLineFactory.html">MediaLineFactory</a></li>
                                 <li><a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a></li>
-                                <li><a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a></li>
                             </ul>
                         </div>
                     </div>
@@ -91,10 +90,10 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/LogEntry.js.html#l15"><code>LogEntry.js:15</code></a>
+            Defined in: <a href="../files/LogEntry.js.html#l8"><code>LogEntry.js:8</code></a>
         </div>
 
-            Module: <a href="../modules/SyncFileMediaLine.html">SyncFileMediaLine</a>
+            Module: <a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a>
 
 </div>
 
@@ -133,7 +132,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l15"><code>LogEntry.js:15</code></a>
+        <a href="../files/LogEntry.js.html#l8"><code>LogEntry.js:8</code></a>
         </p>
 
 
@@ -206,26 +205,6 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
-                            <li class="index-item method private">
-                                <a href="#method_processingFunction">processingFunction</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_"></a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_mediaLineFactory">mediaLineFactory</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_processingFunction">processingFunction</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_processingFunction">processingFunction</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_toJSONString">toJSONString</a>
 
@@ -266,332 +245,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_processingFunction" class="method item private">
-    <h3 class="name"><code>processingFunction</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>logEntry</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/AsyncFileMediaLine.html">AsyncFileMediaLine</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/mediaLines_AsyncFileMediaLine.js.html#l30"><code>mediaLines\AsyncFileMediaLine.js:30</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">logEntry</code>
-                        <span class="type">Module:LogEntry</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Entry object to be logged.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>:
-                    <p>True if resolved, Error object if rejected.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_" class="method item">
-    <h3 class="name"><code></code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/mediaLines_ConsoleMediaLine.js.html#l26"><code>mediaLines\ConsoleMediaLine.js:26</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_mediaLineFactory" class="method item">
-    <h3 class="name"><code>mediaLineFactory</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>config</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Module:AbstractMediaLine</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/MediaLineFactory.html">MediaLineFactory</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/mediaLines_MediaLineFactory.js.html#l21"><code>mediaLines\MediaLineFactory.js:21</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">config</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Configuration parameters object. Carries all pertinent configurations to apply to the media handler (MediaLine object) to be created.</li>
-</ul>
-
-                    </div>
-
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">media</code>
-                                    <span class="type">(Globals.PRIORITY | String)</span>
-
-                                <div class="param-description">
-                                    <ul>
-<li>Attribute specifying what media handler to create.</li>
-</ul>
-
-                                </div>
-
-                            </li>
-                        </ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Module:AbstractMediaLine</span>:
-            </div>
-        </div>
-
-        <div class="throws">
-            <h4>Throws:</h4>
-
-            <div class="throws-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError" class="crosslink external" target="_blank">TypeError</a></span>:
-                    <p>Argument config must be a valid type of media.</p>
-
-            </div>
-        </div>
-
-</div>
-<div id="method_processingFunction" class="method item private">
-    <h3 class="name"><code>processingFunction</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>logEntry</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/ConsoleMediaLine.html">ConsoleMediaLine</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/mediaLines_ConsoleMediaLine.js.html#l37"><code>mediaLines\ConsoleMediaLine.js:37</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">logEntry</code>
-                        <span class="type">Module:LogEntry</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Entry object to be logged.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>:
-                    <p>True if resolved, Error object if rejected.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_processingFunction" class="method item private">
-    <h3 class="name"><code>processingFunction</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>logEntry</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/mediaLines_SyncFileMediaLine.js.html#l28"><code>mediaLines\SyncFileMediaLine.js:28</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">logEntry</code>
-                        <span class="type">Module:LogEntry</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Entry object to be logged.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="crosslink external" target="_blank">Promise</a></span>:
-                    <p>True if resolved, Error object if rejected.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_toJSONString" class="method item">
     <h3 class="name"><code>toJSONString</code></h3>
 
@@ -610,7 +263,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l67"><code>LogEntry.js:67</code></a>
+        <a href="../files/LogEntry.js.html#l60"><code>LogEntry.js:60</code></a>
         </p>
 
 
@@ -653,7 +306,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l58"><code>LogEntry.js:58</code></a>
+        <a href="../files/LogEntry.js.html#l51"><code>LogEntry.js:51</code></a>
         </p>
 
 
@@ -694,7 +347,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l48"><code>LogEntry.js:48</code></a>
+        <a href="../files/LogEntry.js.html#l41"><code>LogEntry.js:41</code></a>
         </p>
 
 
@@ -719,7 +372,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l33"><code>LogEntry.js:33</code></a>
+        <a href="../files/LogEntry.js.html#l26"><code>LogEntry.js:26</code></a>
         </p>
 
 
@@ -745,7 +398,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l40"><code>LogEntry.js:40</code></a>
+        <a href="../files/LogEntry.js.html#l33"><code>LogEntry.js:33</code></a>
         </p>
 
 
@@ -770,7 +423,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/LogEntry.js.html#l27"><code>LogEntry.js:27</code></a>
+        <a href="../files/LogEntry.js.html#l20"><code>LogEntry.js:20</code></a>
         </p>
 
 

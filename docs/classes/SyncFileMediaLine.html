@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>AbstractMediaLine - Multiplexed-Logger</title>
+    <title>SyncFileMediaLine - Multiplexed-Logger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -85,15 +85,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>AbstractMediaLine Class</h1>
+<h1>SyncFileMediaLine Class</h1>
 <div class="box meta">
 
         <div class="extends">
-            Extends Helpers.Abstract
+            Extends <a href="../classes/AbstractFileMediaLine.html" class="crosslink">AbstractFileMediaLine</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/mediaLines_AbstractMediaLine.js.html#l12"><code>mediaLines\AbstractMediaLine.js:12</code></a>
+            Defined in: <a href="../files/mediaLines_SyncFileMediaLine.js.html#l9"><code>mediaLines\SyncFileMediaLine.js:9</code></a>
         </div>
 
             Module: <a href="../modules/MultiplexedLogger.html">MultiplexedLogger</a>
@@ -102,14 +102,14 @@
 
 
 <div class="box intro">
-    <p>Media lines specify different media behaviour for processing log entries, and hold reference of those logs that are in their (media line's) levels of verbosity via a private LogQueue object. This class abstracts away logic and attributes common to all the various implementations.</p>
+    <p>Implementation of MediaLine specific to synchronous file logging.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_AbstractMediaLine" class="method item">
-    <h3 class="name"><code>AbstractMediaLine</code></h3>
+<div id="method_SyncFileMediaLine" class="method item">
+    <h3 class="name"><code>SyncFileMediaLine</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -129,7 +129,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/mediaLines_AbstractMediaLine.js.html#l12"><code>mediaLines\AbstractMediaLine.js:12</code></a>
+        <a href="../files/mediaLines_SyncFileMediaLine.js.html#l9"><code>mediaLines\SyncFileMediaLine.js:9</code></a>
         </p>
 
 
@@ -150,27 +150,28 @@
 
 
                     <div class="param-description">
-                        <p>Configuration parameters object.</p>
+                        <p>Configuration parameters object. Inherits all of <a href="../classes/AbstractMediaLine.html" class="crosslink">AbstractMediaLine</a>'s config object parameters, plus the following:</p>
 
                     </div>
 
                         <ul class="params-list">
                             <li class="param">
-                                    <code class="param-name">media</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Globals.MEDIA</span>
+                                    <code class="param-name">logFile</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
                                 <div class="param-description">
-                                    <p>Type of media to output log entries to.</p>
+                                    <p>Path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.</p>
 
                                 </div>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">verbosity</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Globals.PRIORITY</span>
+                                    <code class="param-name optional">[logFormat=&#x27;PLAIN TEXT&#x27;]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
 
                                 <div class="param-description">
-                                    <p>Level of verbosity for this particular log.</p>
+                                    <p>Format to output logs in.</p>
 
                                 </div>
 
@@ -201,15 +202,15 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method public">
+                            <li class="index-item method public inherited">
                                 <a href="#method_log">log</a>
 
                             </li>
-                            <li class="index-item method protected">
+                            <li class="index-item method private inherited">
                                 <a href="#method_processingFunction">processingFunction</a>
 
                             </li>
-                            <li class="index-item method public">
+                            <li class="index-item method public inherited">
                                 <a href="#method_processNext">processNext</a>
 
                             </li>
@@ -220,19 +221,31 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property public">
+                            <li class="index-item property protected inherited">
+                                <a href="#property_logFile">logFile</a>
+
+                            </li>
+                            <li class="index-item property protected inherited">
+                                <a href="#property_logFormat">logFormat</a>
+
+                            </li>
+                            <li class="index-item property public inherited">
+                                <a href="#property_"></a>
+
+                            </li>
+                            <li class="index-item property public inherited">
                                 <a href="#property_media">media</a>
 
                             </li>
-                            <li class="index-item property protected">
+                            <li class="index-item property protected inherited">
                                 <a href="#property_processor">processor</a>
 
                             </li>
-                            <li class="index-item property protected">
+                            <li class="index-item property protected inherited">
                                 <a href="#property_queue">queue</a>
 
                             </li>
-                            <li class="index-item property public">
+                            <li class="index-item property public inherited">
                                 <a href="#property_verbosity">verbosity</a>
 
                             </li>
@@ -245,7 +258,7 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_log" class="method item public">
+<div id="method_log" class="method item public inherited">
     <h3 class="name"><code>log</code></h3>
 
         <div class="args">
@@ -271,8 +284,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#method_log">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l60"><code>mediaLines\AbstractMediaLine.js:60</code></a>
         </p>
 
@@ -329,7 +342,7 @@
 
 
 </div>
-<div id="method_processingFunction" class="method item protected">
+<div id="method_processingFunction" class="method item private">
     <h3 class="name"><code>processingFunction</code></h3>
 
         <div class="args">
@@ -345,16 +358,19 @@
         </span>
 
 
-        <span class="flag protected">protected</span>
+        <span class="flag private">private</span>
 
 
 
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/mediaLines_AbstractMediaLine.js.html#l83"><code>mediaLines\AbstractMediaLine.js:83</code></a>
+            <p>Inherited from
+            <a href="../classes/AbstractMediaLine.html#method_processingFunction">
+                AbstractMediaLine
+            </a>
+            but overwritten in
+        <a href="../files/mediaLines_SyncFileMediaLine.js.html#l22"><code>mediaLines\SyncFileMediaLine.js:22</code></a>
         </p>
 
 
@@ -362,7 +378,7 @@
     </div>
 
     <div class="description">
-        <p>!ABSTRACT! Send log entry to be processed by this media instance. Override this method when extending to implement new media. Remember to return a Promise when you do it.</p>
+        <p>Logic for sync file processing of individual logs.</p>
 
     </div>
 
@@ -396,7 +412,7 @@
 
 
 </div>
-<div id="method_processNext" class="method item public">
+<div id="method_processNext" class="method item public inherited">
     <h3 class="name"><code>processNext</code></h3>
 
         <span class="paren">()</span>
@@ -410,8 +426,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#method_processNext">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l74"><code>mediaLines\AbstractMediaLine.js:74</code></a>
         </p>
 
@@ -433,7 +449,88 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_media" class="property item public">
+<div id="property_logFile" class="property item protected inherited">
+    <h3 class="name"><code>logFile</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/AbstractFileMediaLine.html#property_logFile">AbstractFileMediaLine</a>:
+        <a href="../files/mediaLines_AbstractFileMediaLine.js.html#l30"><code>mediaLines\AbstractFileMediaLine.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_logFormat" class="property item protected inherited">
+    <h3 class="name"><code>logFormat</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/AbstractFileMediaLine.html#property_logFormat">AbstractFileMediaLine</a>:
+        <a href="../files/mediaLines_AbstractFileMediaLine.js.html#l39"><code>mediaLines\AbstractFileMediaLine.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Format to output logs in.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_" class="property item public inherited">
+    <h3 class="name"><code></code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+        <span class="flag public">public</span>
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/AbstractFileMediaLine.html#property_">AbstractFileMediaLine</a>:
+        <a href="../files/mediaLines_AbstractFileMediaLine.js.html#l48"><code>mediaLines\AbstractFileMediaLine.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Internal state of the file. It can either be:
+'waiting': File is NOT still created or properly formatted. This is an invalid state, and operations on the file should wait until it's changed.
+'blank': File is ready, but no logs have been written yet. Concrete media need to know this, to properly modify the JSON string (remove the first preppended comma.)
+'initiated': File is ready, and logs have already been written to it. So no especial steps need to be taken before using it.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_media" class="property item public inherited">
     <h3 class="name"><code>media</code></h3>
     <span class="type">Globals.MEDIA</span>
 
@@ -443,8 +540,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#property_media">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l23"><code>mediaLines\AbstractMediaLine.js:23</code></a>
         </p>
 
@@ -459,7 +556,7 @@
 
 
 </div>
-<div id="property_processor" class="property item protected">
+<div id="property_processor" class="property item protected inherited">
     <h3 class="name"><code>processor</code></h3>
     <span class="type"><a href="../classes/Processor.html" class="crosslink">Processor</a></span>
 
@@ -469,8 +566,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#property_processor">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l49"><code>mediaLines\AbstractMediaLine.js:49</code></a>
         </p>
 
@@ -485,7 +582,7 @@
 
 
 </div>
-<div id="property_queue" class="property item protected">
+<div id="property_queue" class="property item protected inherited">
     <h3 class="name"><code>queue</code></h3>
     <span class="type"><a href="../classes/LogQueue.html" class="crosslink">LogQueue</a></span>
 
@@ -495,8 +592,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#property_queue">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l42"><code>mediaLines\AbstractMediaLine.js:42</code></a>
         </p>
 
@@ -510,7 +607,7 @@
 
 
 </div>
-<div id="property_verbosity" class="property item public">
+<div id="property_verbosity" class="property item public inherited">
     <h3 class="name"><code>verbosity</code></h3>
     <span class="type">Globals.PRIORITY</span>
 
@@ -520,8 +617,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/AbstractMediaLine.html#property_verbosity">AbstractMediaLine</a>:
         <a href="../files/mediaLines_AbstractMediaLine.js.html#l31"><code>mediaLines\AbstractMediaLine.js:31</code></a>
         </p>
 

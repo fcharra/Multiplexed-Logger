@@ -1,4 +1,3 @@
-/** @namespace Settings */
 module.exports = {
 
   OUT_DIR: process.argv[1],
