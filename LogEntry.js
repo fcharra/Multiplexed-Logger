@@ -12,10 +12,12 @@ module.exports = class LogEntry {
   * @param {string|Globals.PRIORITY} priority A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.
   * @param {string} message Message to be logged.
   * @param {Date} [time=null] Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)
+  * @throws {TypeError} If any of the arguments are not of a valid type.
   */
   constructor(priority, message, time = null) {
-    if (!time || !(time instanceof Date))
-      time = new Date();
+    if (!time) time = new Date();
+    if (!time instanceof Date) throw TypeError('time must be a Date object.');
+    if (typeof message !== 'string') throw TypeError('message must be a string.');
 
     /**
     * Time at which the event took place.

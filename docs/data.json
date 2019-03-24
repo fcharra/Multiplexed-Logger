@@ -2,7 +2,7 @@
     "project": {
         "name": "Multiplexed-Logger",
         "description": "Simultaneously log to multiple media with a singleline of code in NodeJS. Supports logging to console and file (syncand async). Supports both plain text and JSON formats. Logging to a databse and to a server via HTTP are planned in a future version.",
-        "version": "0.0.1",
+        "version": "0.1.0",
         "url": "https://github.com/fcharra/Multiplexed-Logger.git"
     },
     "files": {
@@ -331,7 +331,11 @@
                     "optional": true,
                     "optdefault": "null"
                 }
-            ]
+            ],
+            "throws": {
+                "description": "If any of the arguments are not of a valid type.",
+                "type": "TypeError"
+            }
         },
         "LogQueue": {
             "name": "LogQueue",
@@ -728,7 +732,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 20,
+            "line": 22,
             "description": "Time at which the event took place.",
             "itemtype": "property",
             "name": "timestamp",
@@ -737,7 +741,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 26,
+            "line": 28,
             "description": "A verbosity value that represents the priority of this entry, as defined in the globals object.",
             "writeonce": "",
             "itemtype": "property",
@@ -747,7 +751,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 33,
+            "line": 35,
             "description": "Tag corresponding to the priority level of the object.",
             "access": "private",
             "tagname": "",
@@ -759,7 +763,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 41,
+            "line": 43,
             "description": "Message to be logged.",
             "writeonce": "",
             "itemtype": "property",
@@ -769,7 +773,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 51,
+            "line": 53,
             "description": "Returns a string representing the log entry.",
             "itemtype": "method",
             "name": "toString",
@@ -781,7 +785,7 @@
         },
         {
             "file": "LogEntry.js",
-            "line": 60,
+            "line": 62,
             "description": "Returns a JSON-formatted string representing the log entry.",
             "itemtype": "method",
             "name": "toJSONString",

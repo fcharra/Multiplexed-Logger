@@ -22,7 +22,7 @@ module.exports = {
       if (priority >= MPLogger_GLOBALS.PRIORITY.SECURITY_ALERT && priority <= MPLogger_GLOBALS.PRIORITY.VERBOSE)
         return Math.floor(priority);
       else
-        throw Error('Wrong priority argument. Perhaps a typo?');
+        throw RangeError('Wrong priority argument. Perhaps a typo?');
     }
 
     let result = null;
@@ -44,7 +44,7 @@ module.exports = {
           result = MPLogger_GLOBALS.PRIORITY.VERBOSE;
           break;
         default:
-          throw Error('Wrong priority argument. Perhaps a typo?');
+          throw RangeError('Wrong priority argument. Perhaps a typo?');
       }
 
       return result;

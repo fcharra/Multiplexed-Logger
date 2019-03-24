@@ -60,7 +60,7 @@ Both verbosity for each media and priority levels for each log entry are defined
 |    4     |     WARNING      | Using defaults or fallbacks, using features untested or not recommended... |
 |    5     |     VERBOSE      | What it says on the label. ;) :)                                          |
 
-You can create new levels, or modify or rearrange the existing ones, by following the format outlined in the [Globals object]. (Remember to update the properties element accordingly.)
+You can create new levels, or modify or rearrange the existing ones, by following the format outlined in the [Globals object] (remember to update the properties element accordingly), and modifying helpers.parsePriority() to allow for them.
 
 # Output formats
 

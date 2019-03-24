@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="Multiplexed-Logger" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.1</em>
+            <em>API Docs for: 0.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -103,10 +103,12 @@ module.exports = class LogEntry {
   * @param {string|Globals.PRIORITY} priority A verbosity value that represents the priority of this entry, as defined in the globals object. It can either be string coded, or a numeric value in the range defined.
   * @param {string} message Message to be logged.
   * @param {Date} [time=null] Time at which the event took place. If ommited, the constructor will assign one when this instance of the entry is created. (Which means it can differ from media to media, even for the same event.)
+  * @throws {TypeError} If any of the arguments are not of a valid type.
   */
   constructor(priority, message, time = null) {
-    if (!time || !(time instanceof Date))
-      time = new Date();
+    if (!time) time = new Date();
+    if (!time instanceof Date) throw TypeError(&#x27;time must be a Date object.&#x27;);
+    if (typeof message !== &#x27;string&#x27;) throw TypeError(&#x27;message must be a string.&#x27;);
 
     /**
     * Time at which the event took place.
