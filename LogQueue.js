@@ -10,8 +10,12 @@ module.exports = class LogQueue {
   * @class LogQueue
   * @constructor
   * @param {AbstractMediaLine} mediaLine (Concrete) Medialine owner of this queue.
+  * @throws {TypeError} If mediaLine is not an instance of AbstractMediaLine.
   */
   constructor(mediaLine) {
+    if (!mediaLine.constructor.toString().includes('MediaLine'))
+      throw TypeError('mediaLine must be an instance of the AbstractMediaLine type.'); // Couldn't get instanceof to work. Maybe because of abstraction?
+
     /**
     * An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
     * @private
@@ -31,8 +35,12 @@ module.exports = class LogQueue {
   /**
   * Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.
   * @method push
-  * @param {LogEntry} log LogEntry instance to be pushed to the queue. */
+  * @param {LogEntry} log LogEntry instance to be pushed to the queue.
+  * @throws {TypeError} If log is not an instance of LogEntry.
+  */
   push(log) {
+    if (!(log instanceof LogEntry)) throw TypeError('log should be an instance of LogEntry');
+
     this.queue.push(log);
     this.mediaLine.processNext();
   }

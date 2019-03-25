@@ -2,7 +2,7 @@
     "project": {
         "name": "Multiplexed-Logger",
         "description": "Simultaneously log to multiple media with a singleline of code in NodeJS. Supports logging to console and file (syncand async). Supports both plain text and JSON formats. Logging to a databse and to a server via HTTP are planned in a future version.",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "url": "https://github.com/fcharra/Multiplexed-Logger.git"
     },
     "files": {
@@ -356,7 +356,11 @@
                     "description": "(Concrete) Medialine owner of this queue.",
                     "type": "AbstractMediaLine"
                 }
-            ]
+            ],
+            "throws": {
+                "description": "If mediaLine is not an instance of AbstractMediaLine.",
+                "type": "TypeError"
+            }
         },
         "MultiplexedLogger": {
             "name": "MultiplexedLogger",
@@ -806,7 +810,7 @@
         },
         {
             "file": "LogQueue.js",
-            "line": 15,
+            "line": 19,
             "description": "An instance from a concrete implementation of the MediaLine class, that this queue will belong to.",
             "access": "private",
             "tagname": "",
@@ -818,7 +822,7 @@
         },
         {
             "file": "LogQueue.js",
-            "line": 23,
+            "line": 27,
             "access": "private",
             "tagname": "",
             "itemtype": "property",
@@ -828,15 +832,26 @@
         },
         {
             "file": "LogQueue.js",
-            "line": 31,
+            "line": 35,
             "description": "Register a log entry in the queue. Log entries will stay in the queue until it's their turn to be processed. This class's associated media line object directs the entire process transparently to the user of this class.",
             "itemtype": "method",
             "name": "push",
+            "params": [
+                {
+                    "name": "log",
+                    "description": "LogEntry instance to be pushed to the queue.",
+                    "type": "LogEntry"
+                }
+            ],
+            "throws": {
+                "description": "If log is not an instance of LogEntry.",
+                "type": "TypeError"
+            },
             "class": "LogQueue"
         },
         {
             "file": "LogQueue.js",
-            "line": 41,
+            "line": 49,
             "description": "Used by this class' associated media line object to signal its readiness to receive more logs. If this queue has log entries waiting in line to be processed, it will signal it back to the medialine object via {{#crossLink \"AbstractMediaLine/processNext:method\"}}its processNext method{{/crossLink}}, so that the processing can continue until the queue is empty.",
             "itemtype": "method",
             "name": "doneProcessing",
@@ -844,7 +859,7 @@
         },
         {
             "file": "LogQueue.js",
-            "line": 50,
+            "line": 58,
             "description": "Pop and return the first element of the queue, which will be the oldest. (FIFO stack.)",
             "itemtype": "method",
             "name": "next",

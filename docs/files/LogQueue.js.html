@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="Multiplexed-Logger" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -101,8 +101,12 @@ module.exports = class LogQueue {
   * @class LogQueue
   * @constructor
   * @param {AbstractMediaLine} mediaLine (Concrete) Medialine owner of this queue.
+  * @throws {TypeError} If mediaLine is not an instance of AbstractMediaLine.
   */
   constructor(mediaLine) {
+    if (!mediaLine.constructor.toString().includes(&#x27;MediaLine&#x27;))
+      throw TypeError(&#x27;mediaLine must be an instance of the AbstractMediaLine type.&#x27;); // Couldn&#x27;t get instanceof to work. Maybe because of abstraction?
+
     /**
     * An instance from a concrete implementation of the MediaLine class, that this queue will belong to.
     * @private
@@ -122,8 +126,12 @@ module.exports = class LogQueue {
   /**
   * Register a log entry in the queue. Log entries will stay in the queue until it&#x27;s their turn to be processed. This class&#x27;s associated media line object directs the entire process transparently to the user of this class.
   * @method push
-  * @param {LogEntry} log LogEntry instance to be pushed to the queue. */
+  * @param {LogEntry} log LogEntry instance to be pushed to the queue.
+  * @throws {TypeError} If log is not an instance of LogEntry.
+  */
   push(log) {
+    if (!(log instanceof LogEntry)) throw TypeError(&#x27;log should be an instance of LogEntry&#x27;);
+
     this.queue.push(log);
     this.mediaLine.processNext();
   }
