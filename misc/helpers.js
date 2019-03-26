@@ -2,19 +2,20 @@ const MPLogger_GLOBALS = require('./globals.js');
 
 module.exports = {
 
+  /* NOTE: AFAIK this should work. But I can't get it to do so. JS has no capability to represent Abstract objects. I'll just leave the 'Abstract' mark testimonially, as an indication to developers.
   Abstract: class {
-    /**
+    /*
     * Duck-tape fix to provide Abstract capability to javascript.
     * @class Abstract
     * @constructor
     * @throws {TypeError} When code tries to instantiate it directly with the new keyword.
     */
-    constructor() {
+    /*constructor() {
       if (new.target === this) {
         throw new TypeError("Cannot construct Abstract instances directly");
       }
     }
-  },
+  },*/
 
   // Parser for priority arguments.
   parsePriority: function(priority) {

@@ -8,7 +8,7 @@ const LogQueue = require('../LogQueue.js');
 /**
 * @main MultiplexedLogger
 */
-module.exports = class AbstractMediaLine extends helpers.Abstract {
+module.exports = class AbstractMediaLine {
   /**
   * Media lines specify different media behaviour for processing log entries, and hold reference of those logs that are in their (media line's) levels of verbosity via a private LogQueue object. This class abstracts away logic and attributes common to all the various implementations.
   * @class AbstractMediaLine
@@ -17,9 +17,24 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
   * @param {Object} config Configuration parameters object.
   * @param {string|Globals.MEDIA} config.media Type of media to output log entries to.
   * @param {string|Globals.PRIORITY} config.verbosity Level of verbosity for this particular log.
+  * @throws {TypeError} If the config parameter is invalid.
   */
   constructor(config) {
-    super();
+    // Unparseable verbosity is handled by the parser.
+    let doError = false;
+    if (!config)
+      doError = true;
+    if (!(config instanceof Object))
+      doError = true;
+    if (config.verbosity && (typeof config.verbosity !== 'string'))
+      doError = true;
+    if (!(config.media))
+      doError = true;
+    if (typeof config.media !== 'string')
+      doError = true;
+
+    if (doError) throw TypeError('Invalid config parameter');
+
     /**
     * Type of media to output log entries to.
     * @public
@@ -27,7 +42,7 @@ module.exports = class AbstractMediaLine extends helpers.Abstract {
     * @property media
     * @type {Globals.MEDIA}
     */
-    this.media = config.media || null;
+    this.media = config.media;
     /**
     * Level of verbosity for this particular log.
     * @public

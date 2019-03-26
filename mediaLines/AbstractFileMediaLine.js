@@ -21,11 +21,6 @@ module.exports = class AbstractFileMediaLine extends AbstractMediaLine {
   constructor(config) {
     super(config);
 
-    // Make class abstract
-    if (new.target === this) {
-      throw new TypeError("Cannot construct Abstract instances directly");
-    }
-
     // Settings specific to log files
     /**
     * String containing path to log file, file name, and extension. Behaviour with other kinds of paths from nodejs fs module API remain untested at the moment.
